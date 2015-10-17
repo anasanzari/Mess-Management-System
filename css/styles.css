@@ -1,0 +1,45 @@
+/* 
+    Created on : Oct 17, 2015, 11:45:20 PM
+    Author     : anasanzari
+*/
+
+/* overrides */
+
+
+
+
+
+/*extras*/
+
+.title{
+    background: #A48AD4;
+    text-align: center;
+    min-height: 100px;
+}
+.title .text{
+    font-size:2rem;
+    color:#fff;
+    margin-top: 25px;
+}
+
+.sidenav{
+    background-color: #2F3545;
+    background-image: linear-gradient(to bottom, #313340 0px, #2F3545 100%);
+    background-repeat: repeat-x;
+}
+
+.header{
+    background: #fff;
+    padding: 15px 10px;
+    min-height: 100px;
+    box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.14);
+}
+.header h3{
+    margin:0px;
+    text-align: center;
+    
+}
+
+body{
+    background: #FAFAFA;
+}

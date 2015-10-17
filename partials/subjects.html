@@ -1,0 +1,37 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-offset-3 col-md-6">
+
+            <form id="subjectform" action="./complete.php" method="POST">
+                <h1>Add Subject</h1>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" ng-model="name" class="form-control"  placeholder="Name" required>
+                </div>
+                <div class="form-group">
+                    <label>Maximum Bunk Limit</label>
+                    <input type="number" ng-model="limit" class="form-control" placeholder="Bunk limit" required>
+                </div>
+                <a class="btn btn-default" ng-click="add()">Add</a>
+                <div style="display: inline-block;padding-left:5px" ng-show="isAdding">
+                    <img src="./images/loader.gif" style="width:25px;" >
+                </div>
+                
+                <hr>
+                <h1>Added Subjects</h1>
+                
+                <div ng-repeat="subject in subjects">
+                    <div>
+                    <a ng-click="delete(subject)" class="btn btn-default" style="float: right">Delete</a>
+                    <h3>{{subject.name}}</h3>
+                    </div>
+                </div>
+                
+                <div style="height:30px"></div>
+                
+
+            </form>
+
+        </div>
+    </div>
+</div>
