@@ -15,7 +15,13 @@ messapp.config(['$routeProvider', '$locationProvider',
                 when('/', {
                     templateUrl: 'partials/admin.html',
                     controller: 'AdminCtrl'
-                })
+                }).when('/messentry',{
+                    templateUrl: 'partials/messcardentry.html',
+                    controller: 'MessEntryCtrl'
+                }).when('/extrasentry',{
+                    templateUrl: 'partials/extrasentry.html',
+                    controller: 'ExtraxEntryCtrl'
+                });
         $locationProvider.html5Mode(false).hashPrefix('!');
     }]);
 

@@ -10,3 +10,14 @@ AppControllers.controller('AdminCtrl',
 );
 
 
+AppControllers.controller('MessEntryCtrl',
+        function MessEntryCtrl($scope, $location, $rootScope) {
+            
+        }
+);
+
+AppControllers.controller('ExtraxEntryCtrl',
+        function MessEntryCtrl($scope, $location, $rootScope) {
+            
+        }
+);
