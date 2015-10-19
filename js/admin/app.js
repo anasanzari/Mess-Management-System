@@ -3,7 +3,8 @@
 /* App Module */
 
 var messapp = angular.module('messapp', [
-    'ngRoute',   
+    'ngRoute',
+    'ngMaterial',
     'AppControllers',
     'AppServices',
     'AppDirectives'
@@ -13,8 +14,8 @@ messapp.config(['$routeProvider', '$locationProvider',
     function($routeProvider, $locationProvider) {
         $routeProvider.
                 when('/', {
-                    templateUrl: 'partials/admin.html',
-                    controller: 'AdminCtrl'
+                    templateUrl: 'partials/main.html',
+                    controller: 'MainCtrl'
                 }).when('/messentry',{
                     templateUrl: 'partials/messcardentry.html',
                     controller: 'MessEntryCtrl'

@@ -1,0 +1,54 @@
+<div class="container-fluid" style="padding-left: 30px">
+    <div class="row" style="margin-top: 25px">
+        <div class="col-sm-12">
+            <h3>Mess card Entry</h3>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <md-autocomplete
+                        ng-disabled="isDisabled"
+                        md-no-cache="noCache"
+                        md-selected-item="selectedItem"
+                        md-search-text-change="searchTextChange(searchText)"
+                        md-search-text="searchText"
+                        md-selected-item-change="selectedItemChange(item)"
+                        md-items="item in querySearch(searchText)"
+                        md-item-text="item.rollno"
+                        md-min-length="0"
+                        placeholder="Roll No">
+                        <md-item-template>
+                            <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.rollno}} :: {{item.name}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No states matching "{{searchText}}" were found.
+                        </md-not-found>
+                    </md-autocomplete>
+                </div>
+                <div class="col-sm-6">
+                    <md-button class="md-raised" style="margin:0" ng-click="add(selectedItem)">Add</md-button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 25px">
+        <div class="col-sm-12">
+            <h3>Added Mess Members</h3>
+
+            <md-content class="md-whiteframe-3dp" style="width:50%">
+                <ul class="entrylist">
+                    <li ng-repeat="member in addedMembers">
+                        {{member.name}} <span class="roll">{{member.rollno}}</span>
+                    </li>
+                </ul>
+            </md-content>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+
