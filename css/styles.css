@@ -115,12 +115,52 @@ ul.entrylist li{
 span.mid,span.end{
     padding:0 10px;
 }
+span.onethree{
+    width:33%;
+    display: inline-block;
+}
+
+span.cost{
+    color:#fd4848;
+    font-size: 1.5rem;
+}
+span.name{
+    color:#48b0fd;
+    width:33%;
+    display: inline-block;
+}
 
 span.mid{
     color:#c19b9b;
 }
 span.end{
     color:#f93131;
+}
+.listhead{
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:40px;
+    background: #fff;
+    border-bottom: 1px rgba(0,0,0,.1) solid;
+    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
+}
+.listhead .lh{
+    padding:8px 10px;
+    font-size: 16px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,.1);
+}
+ul.entrylist .listhead:hover{
+    background: none;
+    cursor: auto;
+}
+ul.billlist{
+    margin-top: 40px;
+}
+.billlist li:hover{
+    background: #dee6ec;
+    cursor: pointer;
 }
 
 

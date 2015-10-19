@@ -125,3 +125,23 @@ AppControllers.controller('MessCutCtrl',
             }     
         }
 );
+
+AppControllers.controller('BillingsCtrl',
+        function BillingsCtrl($scope, $location, $rootScope) {
+            $scope.billings = [
+                {rollno:'b130705cs',name:'Anas M',total:1000},
+                {rollno:'b130236cs',name:'Akshaye',total:2000},
+                {rollno:'b130007cs',name:'Akanksha',total:3000},
+                {rollno:'b130145cs',name:'Ahmed P A',total:4000},
+            {rollno:'b130705cs',name:'Anas M',total:1000},
+                {rollno:'b130236cs',name:'Akshaye',total:2000},
+                {rollno:'b130007cs',name:'Akanksha',total:3000},
+                {rollno:'b130145cs',name:'Ahmed P A',total:4000},
+            {rollno:'b130705cs',name:'Anas M',total:1000},
+                {rollno:'b130236cs',name:'Akshaye',total:2000},
+                {rollno:'b130007cs',name:'Akanksha',total:3000},
+                {rollno:'b130145cs',name:'Ahmed P A',total:4000}];
+            
+        }
+);
+
