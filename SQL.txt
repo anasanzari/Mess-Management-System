@@ -1,0 +1,79 @@
+CREATE TABLE Members
+(
+  RollNo INT NOT NULL,
+  MemberName INT NOT NULL,
+  Password INT NOT NULL,
+  Semester INT NOT NULL,
+  PhoneNo INT NOT NULL,
+  PRIMARY KEY (RollNo)
+);
+
+CREATE TABLE Mess
+(
+  MessID INT NOT NULL,
+  MessPassword INT NOT NULL,
+  MessCoordinator INT NOT NULL,
+  MessName INT NOT NULL,
+  PerDayRate INT NOT NULL,
+  PRIMARY KEY (MessID)
+);
+
+CREATE TABLE MessCut
+(
+  FromDate INT NOT NULL,
+  ToDate INT NOT NULL,
+  RollNo INT NOT NULL,
+  MessID INT NOT NULL,
+  PRIMARY KEY (FromDate, RollNo, MessID),
+  FOREIGN KEY (RollNo) REFERENCES Members(RollNo),
+  FOREIGN KEY (MessID) REFERENCES Mess(MessID)
+);
+
+CREATE TABLE Rating
+(
+  RatungValue INT NOT NULL,
+  RollNo INT NOT NULL,
+  MessID INT NOT NULL,
+  PRIMARY KEY (RollNo, MessID),
+  FOREIGN KEY (RollNo) REFERENCES Members(RollNo),
+  FOREIGN KEY (MessID) REFERENCES Mess(MessID)
+);
+
+CREATE TABLE MessJoins
+(
+  StartDate INT NOT NULL,
+  RollNo INT NOT NULL,
+  MessID INT NOT NULL,
+  PRIMARY KEY (StartDate, RollNo, MessID),
+  FOREIGN KEY (RollNo) REFERENCES Members(RollNo),
+  FOREIGN KEY (MessID) REFERENCES Mess(MessID)
+);
+
+CREATE TABLE Forum
+(
+  DateTime INT NOT NULL,
+  Comment INT NOT NULL,
+  RollNo INT NOT NULL,
+  MessID INT NOT NULL,
+  PRIMARY KEY (DateTime, RollNo, MessID),
+  FOREIGN KEY (RollNo) REFERENCES Members(RollNo),
+  FOREIGN KEY (MessID) REFERENCES Mess(MessID)
+);
+
+CREATE TABLE Extras
+(
+  ExtrasID INT NOT NULL,
+  ExtrasName INT NOT NULL,
+  Price INT NOT NULL,
+  PRIMARY KEY (ExtrasID)
+);
+
+CREATE TABLE ExtrasTaken
+(
+  DateTime INT NOT NULL,
+  RollNo INT NOT NULL,
+  ExtrasID INT NOT NULL,
+  PRIMARY KEY (DateTime, RollNo, ExtrasID),
+  FOREIGN KEY (RollNo) REFERENCES Members(RollNo),
+  FOREIGN KEY (ExtrasID) REFERENCES Extras(ExtrasID)
+);
