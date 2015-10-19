@@ -20,7 +20,7 @@
                             <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.rollno}} :: {{item.name}}</span>
                         </md-item-template>
                         <md-not-found>
-                            No states matching "{{searchText}}" were found.
+                            No rollno matching "{{searchText}}" were found.
                         </md-not-found>
                     </md-autocomplete>
                 </div>
@@ -39,7 +39,7 @@
             <md-content class="md-whiteframe-3dp" style="width:50%">
                 <ul class="entrylist">
                     <li ng-repeat="member in addedMembers">
-                        {{member.name}} <span class="roll">{{member.rollno}}</span>
+                        {{member.name}} <span class="mid">{{member.rollno}}</span>
                     </li>
                 </ul>
             </md-content>

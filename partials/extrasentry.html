@@ -1,1 +1,77 @@
-<h1>Welcome</h1>
+<div class="container-fluid" style="padding-left: 30px">
+    <div class="row" style="margin-top: 25px">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3>Extras Entry</h3>
+                    <md-autocomplete
+                        md-no-cache="noCache"
+                        md-selected-item="selectedMember"
+                        md-search-text="memberText"
+                        md-items="item in memberSearch(memberText)"
+                        md-item-text="item.rollno"
+                        md-min-length="0"
+                        placeholder="Roll No">
+                        <md-item-template>
+                            <span md-highlight-text="memberText" md-highlight-flags="^i">{{item.rollno}} :: {{item.name}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No rollno matching "{{memberText}}" were found in added.
+                        </md-not-found>
+                    </md-autocomplete>
+
+                    <md-autocomplete
+                        md-no-cache="noCache"
+                        md-selected-item="selectedExtra"
+                        md-search-text="extraText"
+                        md-items="item in extraSearch(extraText)"
+                        md-item-text="item.name"
+                        md-min-length="0"
+                        placeholder="Extra" style="margin-top: 25px">
+                        <md-item-template>
+                            <span md-highlight-text="extraText" md-highlight-flags="^i">{{item.name}} :: {{item.price|currency:"&#8377"}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No Extras matching "{{extraText}}" were found.
+                        </md-not-found>
+                    </md-autocomplete>
+
+                    <md-button class="md-raised" style="margin-top:25px" ng-click="add(selectedItem)">Add</md-button>
+
+                </div>
+                <div class="col-sm-6">
+                    <h3>Extras History</h3>
+                    <md-content class="md-whiteframe-3dp">
+                        <p ng-show="history.length==0" style="padding: 5px 10px">No extras taken yet.</p>
+                        <ul class="entrylist">
+                            <li ng-repeat="item in history">
+                                {{item.rollno}}<span class="mid">{{item.name}}</span><span class="end">{{item.price|currency:"&#8377"}}</span></span>
+                            </li>
+                        </ul>
+                    </md-content>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--div class="row" style="margin-top: 25px">
+        <div class="col-sm-12">
+            <h3>Added Mess Members</h3>
+
+            <md-content class="md-whiteframe-3dp" style="width:50%">
+                <ul class="entrylist">
+                    <li ng-repeat="member in addedMembers">
+                        {{member.name}} <span class="roll">{{member.rollno}}</span>
+                    </li>
+                </ul>
+            </md-content>
+
+        </div>
+    </div-->
+
+
+
+</div>
+
+

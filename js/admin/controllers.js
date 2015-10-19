@@ -9,7 +9,7 @@ AppControllers.controller('AdminCtrl',
                 {name: 'Extras Entry', link: 'extrasentry'}, {name: 'Mess Cuts', link: 'messcuts'},
                 {name: 'Billings', link: 'billings'}, {name: 'Mess Info', link: 'messinfo'}];
             $scope.current = "";
-            
+
             $scope.navigate = function (link) {
                 $scope.current = link;
                 $location.path(link);
@@ -19,30 +19,30 @@ AppControllers.controller('AdminCtrl',
 
 AppControllers.controller('MainCtrl',
         function MainCtrl($scope, $location, $rootScope) {
-            
+
         }
 );
 
 
 AppControllers.controller('MessEntryCtrl',
-        function MessEntryCtrl($scope, $location, $rootScope,$log) {
-           
-             $scope.isDisabled = false;
-             $scope.states = loadAll();
-             $scope.querySearch = querySearch;
-             $scope.selectedItemChange = selectedItemChange;
-             $scope.searchTextChange = searchTextChange;
-             $scope.addedMembers = [{rollno:'b130***cs',name: 'Ahmed P A'},{rollno:'b130***cs',name: 'Aakansha N S'}];
-             $scope.add = function(item){
-                 $scope.addedMembers.unshift(item);
-                 $scope.searchText = '';
-                 $scope.selectedItem= undefined;
-             }
-            
+        function MessEntryCtrl($scope, $location, $rootScope, $log) {
+
+            $scope.isDisabled = false;
+            $scope.members = loadAll();
+            $scope.querySearch = querySearch;
+            $scope.selectedItemChange = selectedItemChange;
+            $scope.searchTextChange = searchTextChange;
+            $scope.addedMembers = [{rollno: 'b130***cs', name: 'Ahmed P A'}, {rollno: 'b130***cs', name: 'Aakansha N S'}];
+            $scope.add = function (item) {
+                $scope.addedMembers.unshift(item);
+                $scope.searchText = '';
+                $scope.selectedItem = undefined;
+            }
+
             function querySearch(query) {
-                var results =  $scope.states.filter(createFilterFor(query));
+                var results = $scope.members.filter(createFilterFor(query));
                 return results;
-                
+
             }
             function searchTextChange(text) {
                 $log.info('Text changed to ' + text);
@@ -50,23 +50,52 @@ AppControllers.controller('MessEntryCtrl',
             function selectedItemChange(item) {
                 $log.info('Item changed to ' + JSON.stringify(item));
             }
-            
+
             function loadAll() {
-                var all = [{rollno:'b130705cs',name: 'Anas M'},{rollno:'b130236cs',name: 'Akshye Ap'}];
+                var all = [{rollno: 'b130705cs', name: 'Anas M'}, {rollno: 'b130236cs', name: 'Akshye Ap'}];
                 return all;
             }
-            
+
             function createFilterFor(query) {
                 var lowercaseQuery = angular.lowercase(query);
-                return function filterFn(state) {
-                    return (state.rollno.indexOf(lowercaseQuery) === 0);
+                return function filterFn(member) {
+                    return (member.rollno.indexOf(lowercaseQuery) === 0);
                 };
             }
         }
 );
 
-AppControllers.controller('ExtraxEntryCtrl',
-        function MessEntryCtrl($scope, $location, $rootScope) {
-
+AppControllers.controller('ExtrasEntryCtrl',
+        function ExtrasEntryCtrl($scope, $location, $rootScope) {
+           
+            $scope.memberSearch = memberSearch;
+            $scope.extraSearch = extraSearch;
+            
+            $scope.addedMembers = [{rollno: 'b130112cs', name: 'Ahmed P A'}, {rollno: 'b130203cs', name: 'Aakansha N S'}];
+            $scope.extras = [{id:'1',name:'Kur Kure',price:20.00},{id:'2',name:'Oreo Biscuit',price:30.00},{id:'3',name:'Lime Juice',price: 15.00}];
+            $scope.history = [];
+            
+            $scope.add = function(){
+                var item = {rollno:$scope.selectedMember.rollno,name:$scope.selectedExtra.name,price:$scope.selectedExtra.price};
+                $scope.history.unshift(item);
+                $scope.memberText = '';
+                $scope.selectedMember = undefined;
+                $scope.extraText = '';
+                $scope.selectedExtra = undefined;
+            }
+            
+            function memberSearch(query) {
+                var results = $scope.addedMembers.filter(function(member){
+                    return (member.rollno.indexOf(angular.lowercase(query))===0);
+                });
+                return results;
+            }
+            function extraSearch(query) {
+                var results = $scope.extras.filter(function(extra){
+                    return (extra.name.indexOf(angular.lowercase(query))===0);
+                });
+                return results;
+            }
+        
         }
 );

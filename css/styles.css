@@ -98,11 +98,21 @@ body{
 
 /*messcard entry */
 ul.entrylist{
+    max-height: 400px;
+    overflow: auto;
 }
 ul.entrylist li{
     padding:8px 10px;
     border-bottom: 1px rgba(0,0,0,.1) solid;
 }
-.entrylist .roll{
+
+span.mid,span.end{
+    padding:0 10px;
+}
+
+span.mid{
     color:#c19b9b;
+}
+span.end{
+    color:#f93131;
 }
