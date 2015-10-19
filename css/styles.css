@@ -5,7 +5,13 @@
 
 /* overrides */
 
+md-datepicker{
+    background: none;
+}
 
+.md-datepicker-calendar-pane{
+    background: #fff;
+}
 
 
 
@@ -116,3 +122,5 @@ span.mid{
 span.end{
     color:#f93131;
 }
+
+

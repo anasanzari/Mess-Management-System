@@ -99,3 +99,29 @@ AppControllers.controller('ExtrasEntryCtrl',
         
         }
 );
+
+AppControllers.controller('MessCutCtrl',
+        function MessCutCtrl($scope, $location, $rootScope) {
+            $scope.memberSearch = memberSearch;
+            
+            $scope.addedMembers = [{rollno: 'b130112cs', name: 'Ahmed P A'}, {rollno: 'b130203cs', name: 'Aakansha N S'}];
+            $scope.history = [];
+            
+            $scope.add = function(){
+                var item = {rollno:$scope.selectedMember.rollno,startDate:$scope.startDate,endDate:$scope.endDate};
+                $scope.history.unshift(item);
+                $scope.memberText = '';
+                $scope.selectedMember = undefined;
+                $scope.startDate = undefined;
+                $scope.endDate = undefined;
+                
+            }
+            
+            function memberSearch(query) {
+                var results = $scope.addedMembers.filter(function(member){
+                    return (member.rollno.indexOf(angular.lowercase(query))===0);
+                });
+                return results;
+            }     
+        }
+);

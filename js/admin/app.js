@@ -22,6 +22,9 @@ messapp.config(['$routeProvider', '$locationProvider',
                 }).when('/extrasentry',{
                     templateUrl: 'partials/extrasentry.html',
                     controller: 'ExtrasEntryCtrl'
+                }).when('/messcuts',{
+                    templateUrl: 'partials/messcut.html',
+                    controller: 'MessCutCtrl'
                 });
         $locationProvider.html5Mode(false).hashPrefix('!');
     }]);

@@ -1,0 +1,46 @@
+<div class="container-fluid" style="padding-left: 30px">
+    <div class="row" style="margin-top: 25px">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3>Mess Leaves</h3>
+                    <md-autocomplete
+                        md-no-cache="noCache"
+                        md-selected-item="selectedMember"
+                        md-search-text="memberText"
+                        md-items="item in memberSearch(memberText)"
+                        md-item-text="item.rollno"
+                        md-min-length="0"
+                        placeholder="Roll No" style="margin-bottom: 15px">
+                        <md-item-template>
+                            <span md-highlight-text="memberText" md-highlight-flags="^i">{{item.rollno}} :: {{item.name}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No rollno matching "{{memberText}}" were found in added.
+                        </md-not-found>
+                    </md-autocomplete>
+                    
+                    <md-datepicker ng-model="startDate" md-placeholder="Start date"></md-datepicker>
+                    <md-datepicker ng-model="endDate" md-placeholder="End date"></md-datepicker>
+                    <br>
+                    <md-button class="md-raised" style="margin-top:25px" ng-click="add()">Add</md-button>
+
+                </div>
+                <div class="col-sm-6">
+                    <h3>Leave History</h3>
+                    <md-content class="md-whiteframe-3dp">
+                        <p ng-show="history.length==0" style="padding-top:10px;padding-left: 10px">No Mess leaves were recorded this month.</p>
+                        <ul class="entrylist">
+                            <li ng-repeat="item in history">
+                                {{item.rollno}}<span class="mid">{{item.startDate|date}}</span><span class="end">{{item.endDate|date}}</span></span>
+                            </li>
+                        </ul>
+                    </md-content>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
