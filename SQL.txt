@@ -1,8 +1,8 @@
 CREATE TABLE Members
 (
-  RollNo INT NOT NULL,
-  MemberName INT NOT NULL,
-  Password INT NOT NULL,
+  RollNo VARCHAR(20) NOT NULL,
+  MemberName VARCHAR(25)  NOT NULL,
+  Password VARCHAR(25) INT NOT NULL,
   Semester INT NOT NULL,
   PhoneNo INT NOT NULL,
   PRIMARY KEY (RollNo)
@@ -11,18 +11,18 @@ CREATE TABLE Members
 CREATE TABLE Mess
 (
   MessID INT NOT NULL,
-  MessPassword INT NOT NULL,
-  MessCoordinator INT NOT NULL,
-  MessName INT NOT NULL,
+  MessPassword VARCHAR(20) NOT NULL,
+  MessCoordinator VARCHAR(25) INT NOT NULL,
+  MessName VARCHAR(10) NOT NULL,
   PerDayRate INT NOT NULL,
   PRIMARY KEY (MessID)
 );
 
 CREATE TABLE MessCut
 (
-  FromDate INT NOT NULL,
-  ToDate INT NOT NULL,
-  RollNo INT NOT NULL,
+  FromDate DATE NOT NULL,
+  ToDate DATE NOT NULL,
+  RollNo VARCHAR(20) NOT NULL,
   MessID INT NOT NULL,
   PRIMARY KEY (FromDate, RollNo, MessID),
   FOREIGN KEY (RollNo) REFERENCES Members(RollNo),
@@ -31,8 +31,8 @@ CREATE TABLE MessCut
 
 CREATE TABLE Rating
 (
-  RatungValue INT NOT NULL,
-  RollNo INT NOT NULL,
+  RatingValue INT NOT NULL,
+  RollNo VARCHAR(20) NOT NULL,
   MessID INT NOT NULL,
   PRIMARY KEY (RollNo, MessID),
   FOREIGN KEY (RollNo) REFERENCES Members(RollNo),
@@ -41,8 +41,8 @@ CREATE TABLE Rating
 
 CREATE TABLE MessJoins
 (
-  StartDate INT NOT NULL,
-  RollNo INT NOT NULL,
+  StartDate DATE NOT NULL,
+  RollNo VARCHAR(20) NOT NULL,
   MessID INT NOT NULL,
   PRIMARY KEY (StartDate, RollNo, MessID),
   FOREIGN KEY (RollNo) REFERENCES Members(RollNo),
@@ -51,9 +51,9 @@ CREATE TABLE MessJoins
 
 CREATE TABLE Forum
 (
-  DateTime INT NOT NULL,
-  Comment INT NOT NULL,
-  RollNo INT NOT NULL,
+  DateTime DATETIME NOT NULL,
+  Comment VARCHAR(100) NOT NULL,
+  RollNo VARCHAR(20) NOT NULL,
   MessID INT NOT NULL,
   PRIMARY KEY (DateTime, RollNo, MessID),
   FOREIGN KEY (RollNo) REFERENCES Members(RollNo),
@@ -63,15 +63,15 @@ CREATE TABLE Forum
 CREATE TABLE Extras
 (
   ExtrasID INT NOT NULL,
-  ExtrasName INT NOT NULL,
+  ExtrasName VARCHAR(20) NOT NULL,
   Price INT NOT NULL,
   PRIMARY KEY (ExtrasID)
 );
 
 CREATE TABLE ExtrasTaken
 (
-  DateTime INT NOT NULL,
-  RollNo INT NOT NULL,
+  DateTime DATETIME NOT NULL,
+  RollNo VARCHAR(20) NOT NULL,
   ExtrasID INT NOT NULL,
   PRIMARY KEY (DateTime, RollNo, ExtrasID),
   FOREIGN KEY (RollNo) REFERENCES Members(RollNo),
