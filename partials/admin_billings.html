@@ -4,14 +4,14 @@
             <div class="row">
                 <div class="col-sm-12">
                     <h3>Billings</h3>
-                    <md-content class="md-whiteframe-3dp" style="width:75%">
+                    <md-content class="md-whiteframe-3dp">
                          <div class="listhead">
                                 <span class="lh onethree">Roll No</span>
                                 <span class="lh onethree">Name</span>
                                 <span class="lh onethree">Total</span>
                          </div>
                         <ul class="entrylist billlist">
-                            <li ng-repeat="item in billings">
+                            <li ng-repeat="item in billings" ng-click="navigate(item.rollno)">
                                 <span class="roll onethree">{{item.rollno}}</span>
                                 <span class="name onethree">{{item.name}}</span>
                                 <span class="cost onethree">{{item.total|currency:"&#8377"}}</span>

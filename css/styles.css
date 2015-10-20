@@ -116,7 +116,7 @@ span.mid,span.end{
     padding:0 10px;
 }
 span.onethree{
-    width:33%;
+    width:30%;
     display: inline-block;
 }
 
@@ -136,6 +136,15 @@ span.mid{
 span.end{
     color:#f93131;
 }
+
+span.brick{
+    height:20px;
+    width:20px;
+    margin-right: 5px;
+    background: #ffeeee;
+    display: inline-block;
+}
+
 .listhead{
     position: absolute;
     top:0;

@@ -7,26 +7,23 @@
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen"/>
         <link rel="stylesheet" href="css/angular-material.min.css" media="screen" />
         <link rel="stylesheet" href="css/styles.css" media="screen">
+        <link rel="stylesheet" href="css/angular-chart.css" media="screen">
 
         <script src="js/libs/jquery-1.11.3.min.js"></script>
         <script src="./js/libs/dynamics.min.js"></script>
+        <script src="./js/libs/Chart.min.js"></script>
         <script src="js/libs/angular.min.js"></script>
         <script src="js/libs/angular-route.min.js"></script>
         <script src="js/libs/angular-resource.min.js"></script>
         <script src="js/libs/angular-animate.min.js"></script>
         <script src="js/libs/angular-aria.min.js"></script>
         <script src="js/libs/angular-material.min.js"></script>
+        <script src="js/libs/angular-chart.min.js"></script>
 
         <script src="js/admin/app.js"></script>
         <script src="js/admin/controllers.js"></script>
         <script src="js/admin/services.js"></script>
         <script src="js/directives.js"></script>
-
-        <style>
-
-
-
-        </style>
 
     </head>
     <body >
@@ -50,11 +47,38 @@
                     </div>
                     <div ng-view></div>
                     
+                    
                 </div>  
 
             </div>
            
         </div>
+        <script>
+            var data = [
+    {
+        value: 300,
+        color:"#F7464A",
+        highlight: "#FF5A5E",
+        label: "Red"
+    },
+    {
+        value: 50,
+        color: "#46BFBD",
+        highlight: "#5AD3D1",
+        label: "Green"
+    },
+    {
+        value: 100,
+        color: "#FDB45C",
+        highlight: "#FFC870",
+        label: "Yellow"
+    }
+];
+
+        var ctx = document.getElementById("myChart").getContext("2d");
+        var myNewChart = new Chart(ctx).Pie(data);
+    </script>
+            
 
     </body>
 </html>

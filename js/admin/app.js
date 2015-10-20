@@ -7,7 +7,8 @@ var messapp = angular.module('messapp', [
     'ngMaterial',
     'AppControllers',
     'AppServices',
-    'AppDirectives'
+    'AppDirectives',
+    'chart.js'
 ]);
 
 messapp.config(['$routeProvider', '$locationProvider',
@@ -28,6 +29,15 @@ messapp.config(['$routeProvider', '$locationProvider',
                 }).when('/billings',{
                     templateUrl: 'partials/admin_billings.html',
                     controller: 'BillingsCtrl'
+                }).when('/billings/:id',{
+                    templateUrl: 'partials/admin_billmember.html',
+                    controller: 'BillMemberCtrl'
+                }).when('/analysis',{
+                    templateUrl: 'partials/admin_analysis.html',
+                    controller: 'AnalysisCtrl'
+                }).when('/messinfo',{
+                    templateUrl: 'partials/admin_messinfo.html',
+                    controller: 'MessInfoCtrl'
                 });
         $locationProvider.html5Mode(false).hashPrefix('!');
     }]);
