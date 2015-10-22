@@ -6,40 +6,47 @@ $out = [];
 $_SESSION['loggedin'] = true;
 $_SESSION['usertype'] = 'mess';
 $_SESSION['messname'] = 'C MESS';
-$_SESSION['messid'] = '1001';
+$_SESSION['mess_id'] = '1001';
 
 $_SESSION['rollno']="B130112CS";
 $_SESSION['month']="2015-10";
 
 $out = [];
 
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] && isset($_GET['usertype']) && $_SESSION['usertype'] == $_GET['usertype']) {
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
 
     if (isset($_GET['querytype'])) {
 
         $type = $_GET['querytype'];
         
-        if ($_GET['usertype'] == 'mess') {
+        if ($_SESSION['usertype'] == 'mess') {
             switch ($type) {
-                case 'available_students' : $out = messcardentry();
+                case 'available_students' : $out = list_available();
                     break;
-                case 'added_students' : $out = addextra();
+                case 'added_students' : $out = added_members();
                     break;
-                case 'extras_history': $out = addleave();
+                case 'extras_history': $out = extras_mess_perday();
                     break;
-                case 'leave_history': $out = addleave();
+                case 'leave_history': $out = history_messcut();
                     break;
-                case 'billings': $out = addleave();
+                case 'billings': $out = month_bill();
                     break;
-                case 'extras_summary': $out = addleave();
+                case 'analysis' : $out = mess_amount_analysis();
                     break;
-                case 'extras_history': $out = addleave();
+                case 'forum' : $out =forum_post_mess();
                     break;
+                case 'allextras' : $out = listAllExtras();
+                    break;
+                case 'messinfo' : $out = mess_info();
+                    break;
+                
             }
-        }else if($_GET['usertype']=='student'){
+        }else if($_SESSION['usertype']=='student'){
             switch ($type) {
-                case 'ratemess': $out = ratemess();break;
-                case 'forumpost': $out = forumpost();break;
+                case 'ratings': $out = ratings_view();break;
+                case 'forum': $out = forum_post_student();break;
+                case 'month_bill' :$out = month_bill_student();break;
+                
             }
         }
     } else {
@@ -69,7 +76,7 @@ function rollexist()
 	if($result){
 	
 		$output['status'] = "success";
-		
+		$data = [];
 		if($result->num_rows > 0)
 			$data = ['exists'=>true]; 
 		else{
@@ -85,6 +92,8 @@ function rollexist()
 		
 }
 
+
+
 //Function to check the details of students' current extras
 function current_extras()
 {
@@ -95,11 +104,12 @@ function current_extras()
 	$month=date("Y-m");
 	$sql="select ExtrasName,DateTime from Extras,ExtrasTaken where ".
 	"ExtrasTaken.ExtrasID = Extras.ExtrasID and RollNo = '$rollno' and DateTime like '$month-%' ";
-	echo $sql;
+	
 	$result=mysqli_query($conn, $sql);
 	
 	if($result){
 		$output['status'] = "success";
+                $data = [];
 		while($row = $result->fetch_assoc()){
 			$data[] = $row;
 		
@@ -122,11 +132,12 @@ function history_extras()
 	$month=date("Y-M");
 	$sql="select ExtrasName,DateTime from Extras,ExtrasTaken where ".
 			"ExtrasTaken.ExtrasID = Extras.ExtrasID and RollNo = '$rollno' ";
-	echo $sql;
+	
 	$result=mysqli_query($conn, $sql);
 
 	if($result){
 		$output['status'] = "success";
+                $data = [];
 		while($row = $result->fetch_assoc()){
 			$data[] = $row;
 
@@ -141,18 +152,19 @@ function history_extras()
 }
 
 //Function to find history of members added to a mess
+
 function added_members()
 {
-	$mess_id=$_SESSION['mess_id'];
+	$mess_id = $_SESSION['mess_id'];
 	global $conn;
 	$output = [];
-	$sql="select MemberName,StartDate,Members.RollNo as RollNo from Members,MessJoins where ".
-			"Members.RollNo = MessJoins.RollNo and MessID = $mess_id order by StartDate desc";
-	echo $sql;
+	$sql="select MemberName as name,StartDate as startdate,Members.RollNo as rollno from Members,MessJoins where ".
+			"Members.RollNo = MessJoins.RollNo and MessID = '$mess_id' order by StartDate desc";
 	$result=mysqli_query($conn, $sql);
 
 	if($result){
 		$output['status'] = "success";
+                $data = [];
 		while($row = $result->fetch_assoc()){
 			$data[] = $row;
 
@@ -166,19 +178,20 @@ function added_members()
 
 }
 
-//Function to find history of extras taken from a mess
+//Function to find history of extras taken from a mess 
+
 function extras_mess_history()
 {
 	$mess_id=$_SESSION['mess_id'];
 	global $conn;
 	$output = [];
 	$sql="select MemberName,DateTime,Members.RollNo as RollNo,Extras.ExtrasID as ExtrasID, ExtrasName from Members,MessJoins,Mess,Extras,ExtrasTaken where ".
-			"Members.RollNo = MessJoins.RollNo and Members.RollNo = ExtrasTaken.RollNo and ExtrasTaken.ExtrasID = Extras.ExtrasID and Mess.MessID = $mess_id order by DateTime desc";
-	echo $sql;
+			"Members.RollNo = MessJoins.RollNo and Members.RollNo = ExtrasTaken.RollNo and ExtrasTaken.ExtrasID = Extras.ExtrasID and Mess.MessID = '$mess_id' order by DateTime desc";
 	$result=mysqli_query($conn, $sql);
 
 	if($result){
 		$output['status'] = "success";
+                $data = [];
 		while($row = $result->fetch_assoc()){
 			$data[] = $row;
 
@@ -201,11 +214,12 @@ function history_messcut()
 	$month=date("Y-m");
 	$sql="select MemberName,Members.RollNo as RollNo,FromDate,ToDate from Members,MessCut where ".
 			"Members.RollNo = MessCut.RollNo and MessID = $mess_id and FromDate like '$month-%' order by FromDate desc";
-	echo $sql;
+	
 	$result=mysqli_query($conn, $sql);
 
 	if($result){
 		$output['status'] = "success";
+                $data = [];
 		while($row = $result->fetch_assoc()){
 			$data[] = $row;
 
@@ -223,62 +237,39 @@ function history_messcut()
 function month_bill()
 {
 	$mess_id=$_SESSION['mess_id'];
-	$month=$_SESSION['month'];
+	$month=  isset($_GET['month'])? $_GET['month'] : date("Y-m");
 	global $conn;
 	$output = [];
+        
 	$no_days=0;
 	$cut_days=0;
 	$extras_total=0;
 	$perdayrate=0;
 	$day=date("Y-m-d");
-	//$month=date("Y-m");
 	
-	$sql = "select mj.StartDate, mj.RollNo, m.PerDayRate, "
-			."(select sum(DATEDIFF(ToDate,FromDate)) from MessCut,Members where MessCut.RollNo = Members.RollNo and Members.RollNo = mj.RollNo and FromDate like '$month-%') as CutDays, "	
-			."(select sum(Price) from ExtrasTaken,Extras where ExtrasTaken.ExtrasId = Extras.ExtrasId and ExtrasTaken.Rollno = mj.RollNo and DateTime like '$month-%') as ExtrasTotal "
-			."from MessJoins as mj,Mess as m where mj.MessId = m.MessId and mj.StartDate like '$month-%' and m.MessId = $mess_id";
-	$result=mysqli_query($conn, $sql);
-	while($row=$result->fetch_assoc()){
-		$output[] = $row;
-	}
 	
-	/*$sql="select DATEDIFF('$day',MessJoins.StartDate) as DiffDate from MessJoins,Members where MessJoins.RollNo = Members.RollNo and Members.Rollno = '$rollno' and StartDate like '$month-%'";
-	$result=mysqli_query($conn, $sql);
-	if($result)
-		$no_days=$result->fetch_array()[0];
-	else {
+	$sql = "select mj.StartDate as startdate, mj.RollNo as rollno,mem.MemberName as name, m.PerDayRate as perdayrate, "
+			."(select sum(DATEDIFF(ToDate,FromDate)) from MessCut,Members where MessCut.RollNo = Members.RollNo and Members.RollNo = mj.RollNo and FromDate like '$month-%') as cuts, "	
+			."(select sum(Price) from ExtrasTaken,Extras where ExtrasTaken.ExtrasId = Extras.ExtrasId and ExtrasTaken.Rollno = mj.RollNo and DateTime like '$month-%') as extras "
+			."from MessJoins as mj,Mess as m, Members as mem where mem.RollNo = mj.RollNo and mj.MessId = m.MessId and mj.StartDate like '$month-%' and m.MessId = $mess_id";
+        $result=mysqli_query($conn, $sql);
+	
+        
+        if($result){
+           $output['status'] = "success";
+                $data = [];
+		while($row = $result->fetch_assoc()){
+			$data[] = $row;
+
+		}
+		$output['data'] = $data;
+	}else{
 		$output['status'] = 'fail';
-		$output['error'] = "query1 error";
+		$output['error'] = "query error";
 	}
-	$output['no_days'] = $no_days;
-	$sql="select sum(DATEDIFF(ToDate,FromDate)) from MessCut,Members where MessCut.RollNo = Members.RollNo and Members.Rollno = '$rollno' and FromDate like '$month-%'";
-	$result=mysqli_query($conn, $sql);
-	if($result)
-		$cut_days=$result->fetch_array()[0];
-	else {
-		$output['status'] = 'fail';
-		$output['error'] = "query1 error";
-	}
-	$output['cut_days'] = $cut_days;
-	$sql="select sum(Price) from ExtrasTaken,Extras where ExtrasTaken.ExtrasId = Extras.ExtrasId and ExtrasTaken.Rollno = '$rollno' and DateTime like '$month-%'";
-	$result=mysqli_query($conn, $sql);
-	if($result)
-		$extras_total=$result->fetch_array()[0];
-	else {
-		$output['status'] = 'fail';
-		$output['error'] = "query1 error";
-	}
-	$output['extras_total'] = $extras_total;
-	$sql="select PerDayRate from MessJoins,Mess where MessJoins.MessId = Mess.MessId and StartDate like '$month-%'";
-	echo $sql;
-	$result=mysqli_query($conn, $sql);
-	if($result)
-		$perdayrate=$result->fetch_array()[0];
-	else {
-		$output['status'] = 'fail';
-		$output['error'] = "query1 error";
-	}
-	$output['perdayrate'] = $perdayrate;*/
+	return $output;
+	
+	
 	return $output;
 
 }
@@ -289,10 +280,9 @@ function mess_amount_analysis()
 	$mess_id=$_SESSION['mess_id'];
 	global $conn;
 	$output = [];
-	$sql="select ExtrasName,sum(Price), count(*) from Members, MessJoins, Mess, ExtrasTaken, Extras where ".
+	$sql="select ExtrasName as name ,sum(Price) as amount , count(*) as count from Members, MessJoins, Mess, ExtrasTaken, Extras where ".
 			"Members.RollNo = MessJoins.RollNo and Members.RollNo = ExtrasTaken.RollNo and ExtrasTaken.ExtrasID = Extras.ExtrasID and Mess.MessID = $mess_id group by Extras.ExtrasID";
 			
-	echo $sql;
 	$result=mysqli_query($conn, $sql);
 
 	if($result){
@@ -316,12 +306,12 @@ function list_available()
 	$month=date("Y-m");
 	global $conn;
 	$output = [];
-	$sql="select MemberName, RollNo from Members where Members.RollNo not in".
+	$sql="select MemberName as name, RollNo as rollno from Members where Members.RollNo not in".
 		"(select Members.RollNo as RollNo from Members, MessJoins where Members.RollNo=MessJoins.RollNo and StartDate like '$month-%') ";
 		
-	echo $sql;
+	
 	$result=mysqli_query($conn, $sql);
-
+        $data = [];
 	if($result){
 		$output['status'] = "success";
 		while($row = $result->fetch_assoc()){
@@ -346,11 +336,12 @@ function extras_mess_perday()
 	$day=date("Y-m-d");
 	$sql="select MemberName,DateTime,Members.RollNo as RollNo,Extras.ExtrasID as ExtrasID, ExtrasName from Members,MessJoins,Mess,Extras,ExtrasTaken where ".
 			"Members.RollNo = MessJoins.RollNo and Members.RollNo = ExtrasTaken.RollNo and ExtrasTaken.ExtrasID = Extras.ExtrasID and Mess.MessID = $mess_id and DateTime like '$day%'";
-	echo $sql;
+	
 	$result=mysqli_query($conn, $sql);
 
 	if($result){
 		$output['status'] = "success";
+                $data = [];
 		while($row = $result->fetch_assoc()){
 			$data[] = $row;
 
@@ -365,18 +356,45 @@ function extras_mess_perday()
 }
 
 //Function to view the forum of the given mess
+function listAllExtras()
+{
+	$mess_id=$_SESSION['mess_id'];
+	global $conn;
+	$output = [];
+	$sql="select ExtrasID as id, ExtrasName as name, Price as price from extras;";
+	
+	$result=mysqli_query($conn, $sql);
+
+	if($result){
+		$output['status'] = "success";
+                $data = [];
+		while($row = $result->fetch_assoc()){
+			$data[] = $row;
+
+		}
+		$output['data'] = $data;
+	}else{
+		$output['status'] = 'fail';
+		$output['error'] = "query error";
+	}
+	return $output;
+
+}
+
+
 function forum_post_mess()
 {
 	$mess_id=$_SESSION['mess_id'];
 	global $conn;
 	$output = [];
-	$sql="select MessName, Members.RollNo as RollNo, MemberName, DateTime, Comment from Members,Forum,Mess where ".
+	$sql="select Members.RollNo as rollno, MemberName as name, DATE_FORMAT(DateTime, '%Y-%m-%dT%TZ') as time, Comment as details from Members,Forum,Mess where ".
 			"Members.RollNo = Forum.RollNo and Forum.MessID = Mess.MessID and Mess.MessID = $mess_id order by DateTime desc";
-	echo $sql;
+	
 	$result=mysqli_query($conn, $sql);
 
 	if($result){
 		$output['status'] = "success";
+                $data = [];
 		while($row = $result->fetch_assoc()){
 			$data[] = $row;
 
@@ -396,16 +414,15 @@ function mess_info()
 	$mess_id=$_SESSION['mess_id'];
 	global $conn;
 	$output = [];
-	$sql="select MessID,MessName,MessCoordinator,PerDayRate from Mess where Mess.MessID = $mess_id";
-	echo $sql;
+	$sql="select MessID as messid ,MessName as name ,MessCoordinator as coordinator,PerDayRate as perdayrate from Mess where Mess.MessID = $mess_id";
+	
 	$result=mysqli_query($conn, $sql);
 
 	if($result){
 		$output['status'] = "success";
-		while($row = $result->fetch_assoc()){
-			$data[] = $row;
-
-		}
+                $data = [];
+		$row = $result->fetch_assoc();
+                $data = $row;
 		$output['data'] = $data;
 	}else{
 		$output['status'] = 'fail';
@@ -423,11 +440,12 @@ function forum_post_student()
 	$output = [];
 	$sql="select MessName, Members.RollNo as RollNo, MemberName, DateTime, Comment from Members,Forum,Mess,MessJoins where ".
 			"Members.RollNo = MessJoins.RollNo and MessJoins.MessID = Mess.MessID and Forum.MessID = Mess.MessID and Members.RollNo='$rollno' order by DateTime desc";
-	echo $sql;
+	
 	$result=mysqli_query($conn, $sql);
 
 	if($result){
 		$output['status'] = "success";
+                $data = [];
 		while($row = $result->fetch_assoc()){
 			$data[] = $row;
 
@@ -449,11 +467,12 @@ function ratings_view()
 	$tempoutput=[];
 	$output = [];
 	$sql="select MessName, avg(RatingValue) from Mess,Rating where Mess.MessID=Rating.MessID group by MessName";
-	echo $sql;
+	
 	$result=mysqli_query($conn, $sql);
 
 	if($result){
 		$output['status'] = "success1";
+                $data = [];
 		while($row = $result->fetch_assoc()){
 			$data[] = $row;
 
@@ -464,11 +483,11 @@ function ratings_view()
 		$output['error'] = "query error";
 	}
 	$sql="select Mess.MessID from Mess,MessJoins where Mess.MessID=MessJoins.MessID and MessJoins.RollNo='$rollno'";
-	echo $sql;
+	
 	$result=mysqli_query($conn, $sql);
 	
 	if($result){
-		$output['status'] = "success2";
+		$output['status'] = "success";
 		while($row = $result->fetch_array()[0]){
 			$tempoutput["studentmess"] = $row;
 	
@@ -505,43 +524,7 @@ function month_bill_student()
 		$output[] = $row;
 	}
 
-	/*$sql="select DATEDIFF('$day',MessJoins.StartDate) as DiffDate from MessJoins,Members where MessJoins.RollNo = Members.RollNo and Members.Rollno = '$rollno' and StartDate like '$month-%'";
-	 $result=mysqli_query($conn, $sql);
-	if($result)
-		$no_days=$result->fetch_array()[0];
-	else {
-	$output['status'] = 'fail';
-	$output['error'] = "query1 error";
-	}
-	$output['no_days'] = $no_days;
-	$sql="select sum(DATEDIFF(ToDate,FromDate)) from MessCut,Members where MessCut.RollNo = Members.RollNo and Members.Rollno = '$rollno' and FromDate like '$month-%'";
-	$result=mysqli_query($conn, $sql);
-	if($result)
-		$cut_days=$result->fetch_array()[0];
-	else {
-	$output['status'] = 'fail';
-	$output['error'] = "query1 error";
-	}
-	$output['cut_days'] = $cut_days;
-	$sql="select sum(Price) from ExtrasTaken,Extras where ExtrasTaken.ExtrasId = Extras.ExtrasId and ExtrasTaken.Rollno = '$rollno' and DateTime like '$month-%'";
-	$result=mysqli_query($conn, $sql);
-	if($result)
-		$extras_total=$result->fetch_array()[0];
-	else {
-	$output['status'] = 'fail';
-	$output['error'] = "query1 error";
-	}
-	$output['extras_total'] = $extras_total;
-	$sql="select PerDayRate from MessJoins,Mess where MessJoins.MessId = Mess.MessId and StartDate like '$month-%'";
-	echo $sql;
-	$result=mysqli_query($conn, $sql);
-	if($result)
-		$perdayrate=$result->fetch_array()[0];
-	else {
-	$output['status'] = 'fail';
-	$output['error'] = "query1 error";
-	}
-	$output['perdayrate'] = $perdayrate;*/
+	
 	return $output;
 
 }

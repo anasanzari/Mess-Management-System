@@ -14,7 +14,7 @@
                             <li ng-repeat="item in billings" ng-click="navigate(item.rollno)">
                                 <span class="roll onethree">{{item.rollno}}</span>
                                 <span class="name onethree">{{item.name}}</span>
-                                <span class="cost onethree">{{item.total|currency:"&#8377"}}</span>
+                                <span class="cost onethree">{{(item.perdayrate*(totaldays-item.cuts))+1*item.extras|currency:"&#8377"}}</span>
                             </li>
                         </ul>
                     </md-content>

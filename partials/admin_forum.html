@@ -13,7 +13,7 @@
                                <div>
                                    <span class="pname">{{post.name}}</span>
                                    <span class="proll">{{post.rollno}}</span>
-                                   <span class="ptime">{{post.time}}</span>
+                                   <span class="ptime">{{post.time|date:"h:mm a, MMM d"}}</span>
                                </div>
                                {{post.details}}
                            </li>
