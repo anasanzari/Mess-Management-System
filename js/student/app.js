@@ -8,36 +8,26 @@ var messapp = angular.module('messapp', [
     'AppControllers',
     'AppServices',
     'AppDirectives',
-    'chart.js'
 ]);
 
 messapp.config(['$routeProvider', '$locationProvider',
     function($routeProvider, $locationProvider) {
         $routeProvider.
                 when('/', {
-                    templateUrl: 'partials/admin_main.html',
+                    templateUrl: 'partials/student_main.html',
                     controller: 'MainCtrl'
-                }).when('/messentry',{
-                    templateUrl: 'partials/admin_messcardentry.html',
-                    controller: 'MessEntryCtrl'
-                }).when('/extrasentry',{
-                    templateUrl: 'partials/admin_extrasentry.html',
-                    controller: 'ExtrasEntryCtrl'
-                }).when('/messcuts',{
-                    templateUrl: 'partials/admin_messcut.html',
-                    controller: 'MessCutCtrl'
-                }).when('/billings',{
-                    templateUrl: 'partials/admin_billings.html',
-                    controller: 'BillingsCtrl'
-                }).when('/billings/:id',{
-                    templateUrl: 'partials/admin_billmember.html',
-                    controller: 'BillMemberCtrl'
-                }).when('/analysis',{
-                    templateUrl: 'partials/admin_analysis.html',
-                    controller: 'AnalysisCtrl'
-                }).when('/messinfo',{
-                    templateUrl: 'partials/admin_messinfo.html',
-                    controller: 'MessInfoCtrl'
+                }).when('/currentmonth',{
+                    templateUrl: 'partials/student_currentmonth.html',
+                    controller: 'CurrentMonthCtrl'
+                }).when('/prevmonths',{
+                    templateUrl: 'partials/student_prevmonths.html',
+                    controller: 'PrevMonthsCtrl'
+                }).when('/forum',{
+                    templateUrl: 'partials/student_forum.html',
+                    controller: 'ForumCtrl'
+                }).when('/ratemess',{
+                    templateUrl: 'partials/student_ratemess.html',
+                    controller: 'RateMessCtrl'
                 });
         $locationProvider.html5Mode(false).hashPrefix('!');
     }]);

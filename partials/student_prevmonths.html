@@ -3,29 +3,42 @@
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3>Analysis</h3>
+                    <h3>Previous Bills</h3>
                     <md-content class="md-whiteframe-3dp" style="padding-bottom: 30px;">
-                        <h4 style="text-align: center">Extras Taken</h4>
+                        <h4 style="text-align: center"></h4>
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <canvas id="doughnut" class="chart chart-doughnut" chart-colours='colors' chart-data="data" chart-labels="labels"></canvas>
-                                    <p>Chart based on {{current}}</p>
-                                    <md-button class="md-raised" ng-click="change()"> Switch to {{changeto}}.</md-button>
+                                    <md-input-container>
+                                        <label>Select Month</label>
+                                        <md-select ng-model="selectedMonth" ng-change="changeMonth()">
+                                            <md-option ng-repeat="month in months" value="{{month}}">
+                                                {{month}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
                                     
+                                    <div>
+                                        <h5>Extras Total : {{extratotal|currency:"&#8377"}}</h5>
+                                        <h5>No of Cuts : {{cuts}}</h5>
+                                        <h3>Total : {{total|currency:"&#8377"}}</h3>
+                                        
+                                    </div>
+
                                 </div>
                                 <div class="col-sm-6">
+                                    <h4>Extras Details</h4>
                                     <md-content class="md-whiteframe-3dp">
                                         <div class="listhead">
                                             <span class="lh onethree">Extra</span>
-                                            <span class="lh onethree">Total Amount</span>
-                                            <span class="lh onethree">Count</span>
+                                            <span class="lh onethree">Amount</span>
+                                            <span class="lh onethree">Time</span>
                                         </div>
                                         <ul class="entrylist billlist" style="max-height: 250px">
-                                            <li ng-repeat="item in list | orderBy:current:true" ng-click="navigate(item.rollno)">
+                                            <li ng-repeat="item in list">
                                                 <span class="roll onethree">{{item.name}}</span>
                                                 <span class="name onethree">{{item.amount|currency:"&#8377"}}</span>
-                                                <span class="cost onethree">{{item.count}}</span>
+                                                <span class="cost onethree">{{item.time}}</span>
                                             </li>
                                         </ul>
                                     </md-content>
@@ -33,10 +46,7 @@
                             </div>
                         </div>
                     </md-content>
-
                 </div>
-
-
             </div>
 
         </div>

@@ -2,21 +2,57 @@
 <?php
 require 'connection.php';
 $out = [];
-/*
-if(isset($_GET['type'])){
-	switch($_GET['type']){
-		case 'rollexists' : $out = rollexist();break;
-		
-	}
-	
-}else{
-	$output['status'] = 'fail';
-	$output['error'] = "more fields required.";
-}
-*/
 
-//header('Content-type: text/plain');
-//echo json_encode($out, JSON_PRETTY_PRINT);
+$_SESSION['loggedin'] = true;
+$_SESSION['usertype'] = 'mess';
+$_SESSION['messname'] = 'C MESS';
+$_SESSION['messid'] = '1001';
+
+$_SESSION['rollno']="B130112CS";
+$_SESSION['month']="2015-10";
+
+$out = [];
+
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] && isset($_GET['usertype']) && $_SESSION['usertype'] == $_GET['usertype']) {
+
+    if (isset($_GET['querytype'])) {
+
+        $type = $_GET['querytype'];
+        
+        if ($_GET['usertype'] == 'mess') {
+            switch ($type) {
+                case 'available_students' : $out = messcardentry();
+                    break;
+                case 'added_students' : $out = addextra();
+                    break;
+                case 'extras_history': $out = addleave();
+                    break;
+                case 'leave_history': $out = addleave();
+                    break;
+                case 'billings': $out = addleave();
+                    break;
+                case 'extras_summary': $out = addleave();
+                    break;
+                case 'extras_history': $out = addleave();
+                    break;
+            }
+        }else if($_GET['usertype']=='student'){
+            switch ($type) {
+                case 'ratemess': $out = ratemess();break;
+                case 'forumpost': $out = forumpost();break;
+            }
+        }
+    } else {
+        $out['status'] = 'fail';
+        $out['error'] = "querytype not set.";
+    }
+} else {
+    $out['status'] = 'fail';
+    $out['error'] = "authentication failure";
+}
+
+header('Content-type: text/plain');
+echo json_encode($out, JSON_PRETTY_PRINT);
 
 
 //Function to check if rollno exists
@@ -510,11 +546,4 @@ function month_bill_student()
 
 }
 
-
-
-	$_SESSION['rollno']="B130112CS";
-	$_SESSION['month']="2015-10";
-	$output=month_bill_student();
-header('Content-type: text/plain');
-echo json_encode($output, JSON_PRETTY_PRINT);
 	?>

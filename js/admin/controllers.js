@@ -7,7 +7,8 @@ AppControllers.controller('AdminCtrl',
             $scope.title = "Admin Hello";
             $scope.menu = [{name: 'Mess Card Entry', link: 'messentry'},
                 {name: 'Extras Entry', link: 'extrasentry'}, {name: 'Mess Cuts', link: 'messcuts'},
-                {name: 'Billings', link: 'billings'}, {name: 'Analysis', link: 'analysis'}, {name: 'Mess Info', link: 'messinfo'}];
+                {name: 'Billings', link: 'billings'}, {name: 'Analysis', link: 'analysis'}, 
+                {name: 'Forum', link: 'forum'}, {name: 'Mess Info', link: 'messinfo'}];
             $scope.current = "";
 
             $scope.navigate = function (link) {
@@ -202,6 +203,12 @@ AppControllers.controller('AnalysisCtrl',
             
             
             
+        }
+);
+
+AppControllers.controller('ForumCtrl',
+        function ForumCtrl($scope, $location, $rootScope) {
+            $scope.posts = [{name:'Anas M',rollno:'b130705cs',time:'5 pm',details:'Great food tonight'}];
         }
 );
 

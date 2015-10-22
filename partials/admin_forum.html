@@ -1,0 +1,32 @@
+<div class="container-fluid" style="padding-left: 30px">
+    <div class="row" style="margin-top: 25px">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3>Mess Forum</h3>
+                    
+
+                    <md-content class="md-whiteframe-3dp" style="margin-top: 15px">
+                       
+                       <ul class="postlist">
+                           <li ng-repeat="post in posts" >
+                               <div>
+                                   <span class="pname">{{post.name}}</span>
+                                   <span class="proll">{{post.rollno}}</span>
+                                   <span class="ptime">{{post.time}}</span>
+                               </div>
+                               {{post.details}}
+                           </li>
+                       </ul>
+                    </md-content>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+

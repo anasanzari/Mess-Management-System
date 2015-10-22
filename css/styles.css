@@ -41,6 +41,7 @@ md-datepicker{
     background-image: linear-gradient(to bottom, #313340 0px, #2F3545 100%);
     background-repeat: repeat-x;
     position: fixed;
+    z-index: 1001;
     top:0;
     left:0;
     width:16.6667%;
@@ -91,9 +92,14 @@ ul{
     padding: 15px 10px;
     min-height: 100px;
     box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.14);
+    position: fixed;
+    width:100%;
+    z-index: 1000;
 }
 .header h2{
     margin:0px;
+    margin-left: -100px;
+    padding-top: 25px;
     text-align: center;
     
 }
@@ -172,4 +178,43 @@ ul.billlist{
     cursor: pointer;
 }
 
+
+ul.postlist{
+    max-height: 400px;
+    overflow: auto;
+}
+ul.postlist li{
+    padding:8px 10px;
+    border-bottom: 1px rgba(0,0,0,.1) solid;
+}
+
+span.pname,span.proll,span.ptime{
+    padding-right: 10px;
+}
+span.pname{
+    color: #6a7bdc;
+}
+span.proll{
+    color: #dc9d6a;
+}
+span.ptime{
+    color:#dc6a7f;
+}
+
+span.notrated{
+    height:30px;
+    width:30px;
+    display: inline-block;
+    background-image: url(../images/star.png);
+    background-size: cover;
+    vertical-align: middle;
+}
+span.rated{
+    height:30px;
+    width:30px;
+    display: inline-block;
+    background-image: url(../images/starrated.png);
+    background-size: cover;
+    vertical-align: middle;
+}
 

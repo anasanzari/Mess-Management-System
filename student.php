@@ -7,22 +7,21 @@
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen"/>
         <link rel="stylesheet" href="css/angular-material.min.css" media="screen" />
         <link rel="stylesheet" href="css/styles.css" media="screen">
-        <link rel="stylesheet" href="css/angular-chart.css" media="screen">
 
         <script src="js/libs/jquery-1.11.3.min.js"></script>
         <script src="./js/libs/dynamics.min.js"></script>
-        <script src="./js/libs/Chart.min.js"></script>
+        
         <script src="js/libs/angular.min.js"></script>
         <script src="js/libs/angular-route.min.js"></script>
         <script src="js/libs/angular-resource.min.js"></script>
         <script src="js/libs/angular-animate.min.js"></script>
         <script src="js/libs/angular-aria.min.js"></script>
         <script src="js/libs/angular-material.min.js"></script>
-        <script src="js/libs/angular-chart.min.js"></script>
 
-        <script src="js/admin/app.js"></script>
-        <script src="js/admin/controllers.js"></script>
-        <script src="js/admin/services.js"></script>
+
+        <script src="js/student/app.js"></script>
+        <script src="js/student/controllers.js"></script>
+        <script src="js/student/services.js"></script>
         <script src="js/directives.js"></script>
 
     </head>
@@ -53,7 +52,7 @@
             </div>
            
         </div>
-        
+       
 
     </body>
 </html>

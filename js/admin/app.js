@@ -35,6 +35,9 @@ messapp.config(['$routeProvider', '$locationProvider',
                 }).when('/analysis',{
                     templateUrl: 'partials/admin_analysis.html',
                     controller: 'AnalysisCtrl'
+                }).when('/forum',{
+                    templateUrl: 'partials/admin_forum.html',
+                    controller: 'ForumCtrl'
                 }).when('/messinfo',{
                     templateUrl: 'partials/admin_messinfo.html',
                     controller: 'MessInfoCtrl'
