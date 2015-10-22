@@ -7,11 +7,14 @@ AppControllers.controller('AdminCtrl',
            
             $scope.menu = [{name: 'Current Month', link: 'currentmonth'},
                 {name: 'Previous Months', link: 'prevmonths'}, {name: 'Forum', link: 'forum'},
-                {name: 'Rate Mess', link: 'ratemess'}];
+                {name: 'Rate Mess', link: 'ratemess'}, {name: 'Log Out', link: 'logout'}];
             $scope.current = "";
 
             $scope.navigate = function (link) {
                 $scope.current = link;
+                if(link=='logout'){
+                    location.href = "./logout.php";
+                }
                 $location.path(link);
             }
         }

@@ -2,13 +2,14 @@
 
 var AppServices = angular.module('AppServices', ['ngResource']);
 
-var baseUrl = "http://localhost/Db/DBMS-Project/api/";
+var baseUrl = "./api/";
 
 AppServices.factory('AdminResources',
         function ($resource) {
             return $resource(baseUrl + "get.php", {querytype: '@querytype'},
             {
                 get: {method: 'GET', cache: false, isArray: false},
+                post: {method:'POST',cache:false,isArray:false,url:baseUrl+'post.php'},
                 
             });
         });

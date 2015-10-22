@@ -8,11 +8,14 @@ AppControllers.controller('AdminCtrl',
             $scope.menu = [{name: 'Mess Card Entry', link: 'messentry'},
                 {name: 'Extras Entry', link: 'extrasentry'}, {name: 'Mess Cuts', link: 'messcuts'},
                 {name: 'Billings', link: 'billings'}, {name: 'Analysis', link: 'analysis'},
-                {name: 'Forum', link: 'forum'}, {name: 'Mess Info', link: 'messinfo'}];
+                {name: 'Forum', link: 'forum'}, {name: 'Mess Info', link: 'messinfo'}, {name: 'Log Out', link: 'logout'}];
             $scope.current = "";
 
             $scope.navigate = function (link) {
                 $scope.current = link;
+                if(link=='logout'){
+                    location.href = "./logout.php";
+                }
                 $location.path(link);
             }
         }
@@ -28,7 +31,8 @@ AppControllers.controller('MainCtrl',
 AppControllers.controller('MessEntryCtrl',
         function MessEntryCtrl($scope, $location, $rootScope, $log, AdminResources) {
 
-            $scope.isDisabled = false;
+            $scope.isDisabled = true;
+            $scope.isProcessing = false;
 
             $scope.querySearch = querySearch;
             $scope.selectedItemChange = selectedItemChange;
@@ -38,15 +42,27 @@ AppControllers.controller('MessEntryCtrl',
                 $scope.addedMembers = response.data;
             });
 
-            AdminResources.get({querytype: 'available_students'}, function (response) {
-                $scope.members = response.data;
-            });
+            var updateAvailable = function(){
+                AdminResources.get({querytype: 'available_students'}, function (response) {
+                 $scope.members = response.data;
+                });
+            }
+            updateAvailable();
 
 
             $scope.add = function (item) {
-                $scope.addedMembers.unshift(item);
+
+                $scope.isProcessing = true;
+                var post = new AdminResources();
+                post.rollno = item.rollno;
+                post.$post({querytype: 'messcardentry'},function(response){
+                     $scope.addedMembers.unshift(item);
+                     $scope.isProcessing = false;
+                     updateAvailable();
+                });
                 $scope.searchText = '';
                 $scope.selectedItem = undefined;
+
             }
 
             function querySearch(query) {
@@ -55,10 +71,13 @@ AppControllers.controller('MessEntryCtrl',
 
             }
             function searchTextChange(text) {
-
+                $scope.isDisabled = true;
             }
             function selectedItemChange(item) {
-
+                $scope.isDisabled = false;
+                if ($scope.selectedItem == null) {
+                    $scope.isDisabled = true;
+                }
             }
 
             function createFilterFor(query) {
@@ -78,6 +97,19 @@ AppControllers.controller('ExtrasEntryCtrl',
             $scope.addedMember = [];
             $scope.extras = [];
             $scope.history = [];
+            $scope.isDisabled = true;
+            $scope.isProcessing = false;
+            
+            $scope.searchTextChange = function (text) {
+                $scope.isDisabled = true;
+            }
+            $scope.selectedItemChange = function (item) {
+                $scope.isDisabled = false;
+                
+                if ($scope.selectedMember==null||$scope.selectedExtra==null) {
+                    $scope.isDisabled = true;
+                }
+            }
 
             AdminResources.get({querytype: 'added_students'}, function (response) {
                 $scope.addedMembers = response.data;
@@ -91,7 +123,19 @@ AppControllers.controller('ExtrasEntryCtrl',
 
             $scope.add = function () {
                 var item = {rollno: $scope.selectedMember.rollno, name: $scope.selectedExtra.name, price: $scope.selectedExtra.price};
-                $scope.history.unshift(item);
+                
+                $scope.isProcessing = true;
+                var post = new AdminResources();
+                post.rollno = $scope.selectedMember.rollno;
+                post.extraid = $scope.selectedExtra.id;
+                post.$post({querytype: 'addextra'},function(response){
+  
+                     $scope.history.unshift(item);
+                     $scope.isProcessing = false;
+                     $scope.isDisabled = false;
+                });
+                
+                
                 $scope.memberText = '';
                 $scope.selectedMember = undefined;
                 $scope.extraText = '';
@@ -120,14 +164,49 @@ AppControllers.controller('MessCutCtrl',
 
             $scope.addedMembers = [];
             $scope.history = [];
-            
+            $scope.isDisabled = true;
+            $scope.isProcessing = false;
+
             AdminResources.get({querytype: 'added_students'}, function (response) {
                 $scope.addedMembers = response.data;
             });
+            
+             AdminResources.get({querytype: 'leave_history'}, function (response) {
+                $scope.history = response.data;
+            });
+            
+             $scope.searchTextChange = function (text) {
+                $scope.isDisabled = true;
+            }
+            $scope.selectedItemChange = function (item) {
+                $scope.isDisabled = false;
+                if ($scope.selectedMember==null||$scope.selectedMember==null||$scope.startDate==null||$scope.endDate==null) {
+                    $scope.isDisabled = true;
+                }
+            }
+            $scope.datechange = function(){
+                $scope.isDisabled = false;
+                if ($scope.startDate==null||$scope.endDate==null) {
+                    $scope.isDisabled = true;
+                }
+                    
+            }
 
             $scope.add = function () {
-                var item = {rollno: $scope.selectedMember.rollno, startDate: $scope.startDate, endDate: $scope.endDate};
-                $scope.history.unshift(item);
+                var item = {rollno: $scope.selectedMember.rollno, startdate: $scope.startDate, enddate: $scope.endDate};
+                
+                $scope.isProcessing = true;
+                var post = new AdminResources();
+                post.rollno = $scope.selectedMember.rollno;
+                post.startdate = $scope.startDate;
+                post.enddate = $scope.endDate;
+                console.log($scope.endDate);
+                post.$post({querytype: 'addleave'},function(response){
+                     console.log(response);
+                     $scope.history.unshift(item);
+                     $scope.isProcessing = false;
+                     $scope.isDisabled = false;
+                });
                 $scope.memberText = '';
                 $scope.selectedMember = undefined;
                 $scope.startDate = undefined;
@@ -145,13 +224,13 @@ AppControllers.controller('MessCutCtrl',
 );
 
 AppControllers.controller('BillingsCtrl',
-        function BillingsCtrl($scope, $location, $rootScope,AdminResources,AdminService) {
-            
+        function BillingsCtrl($scope, $location, $rootScope, AdminResources, AdminService) {
+
             $scope.billings = [];
             AdminResources.get({querytype: 'billings'}, function (response) {
                 $scope.billings = response.data;
                 var date = AdminService.parseDate('2015-10-01');
-                $scope.totaldays = AdminService.daysInMonth(date.month,date.year);
+                $scope.totaldays = AdminService.daysInMonth(date.month, date.year);
             });
 
             $scope.navigate = function (rollno) {
@@ -170,7 +249,7 @@ AppControllers.controller('BillMemberCtrl',
 );
 
 AppControllers.controller('AnalysisCtrl',
-        function AnalysisCtrl($scope, $location, $rootScope,AdminResources) {
+        function AnalysisCtrl($scope, $location, $rootScope, AdminResources) {
 
             $scope.list = [];
             $scope.labels = [];
@@ -179,7 +258,7 @@ AppControllers.controller('AnalysisCtrl',
             AdminResources.get({querytype: 'analysis'}, function (response) {
                 $scope.list = response.data;
                 for (var i = 0; i < $scope.list.length; i++) {
-                    console.log($scope.list[i].amount+":"+$scope.list[i].count);
+                    console.log($scope.list[i].amount + ":" + $scope.list[i].count);
                     $scope.labels[i] = $scope.list[i].name;
                     $scope.amount[i] = $scope.list[i].amount;
                     $scope.count[i] = $scope.list[i].count;
@@ -188,7 +267,7 @@ AppControllers.controller('AnalysisCtrl',
                 $scope.current = 'amount';
                 $scope.changeto = 'count';
             });
-            
+
             $scope.colors = ['#97BBCD', '#DCDCDC', '#F7464A', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360', '#1CBB9B',
                 '#2DCC70', '#3598DB', '#AE7AC4', '#354A5F', '#F2C311', '#E67F22', '#E84C3D', '#ED2458', '#2D54B8',
                 '#15B35C', '#F88505', '#FBBF4F', '#C1A985', '#FF6F69', '#BF235E', '#FF3155', '#49F770', '#FF3155',
@@ -213,7 +292,7 @@ AppControllers.controller('AnalysisCtrl',
 
 AppControllers.controller('ForumCtrl',
         function ForumCtrl($scope, AdminResources) {
-             AdminResources.get({querytype: 'forum'}, function (response) {
+            AdminResources.get({querytype: 'forum'}, function (response) {
                 $scope.posts = response.data;
             });
         }
@@ -221,12 +300,12 @@ AppControllers.controller('ForumCtrl',
 
 
 AppControllers.controller('MessInfoCtrl',
-        function BillMemberCtrl($scope,AdminResources ) {
-            
+        function BillMemberCtrl($scope, AdminResources) {
+
             AdminResources.get({querytype: 'messinfo'}, function (response) {
-                 
-                 $scope.data = response.data;
+
+                $scope.data = response.data;
             });
-           
+
         }
 );

@@ -5,9 +5,12 @@
                 <div class="col-sm-6">
                     <h3>Extras Entry</h3>
                     <md-autocomplete
+                        ng-disabled="isProcessing"
                         md-no-cache="noCache"
                         md-selected-item="selectedMember"
                         md-search-text="memberText"
+                        md-search-text-change="searchTextChange(searchText)"
+                        md-selected-item-change="selectedItemChange(item)"
                         md-items="item in memberSearch(memberText)"
                         md-item-text="item.rollno"
                         md-min-length="0"
@@ -21,10 +24,13 @@
                     </md-autocomplete>
 
                     <md-autocomplete
+                        ng-disabled="isProcessing"
                         md-no-cache="noCache"
                         md-selected-item="selectedExtra"
                         md-search-text="extraText"
                         md-items="item in extraSearch(extraText)"
+                        md-search-text-change="searchTextChange(searchText)"
+                        md-selected-item-change="selectedItemChange(item)"
                         md-item-text="item.name"
                         md-min-length="0"
                         placeholder="Extra" style="margin-top: 25px">
@@ -36,7 +42,7 @@
                         </md-not-found>
                     </md-autocomplete>
 
-                    <md-button class="md-raised" style="margin-top:25px" ng-click="add(selectedItem)">Add</md-button>
+                    <md-button ng-disabled="isDisabled||isProcessing" class="md-raised" style="margin-top:25px" ng-click="add(selectedItem)">Add</md-button>
 
                 </div>
                 <div class="col-sm-6">

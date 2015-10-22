@@ -5,9 +5,12 @@
                 <div class="col-sm-6">
                     <h3>Mess Leaves</h3>
                     <md-autocomplete
+                        ng-disabled="isProcessing"
                         md-no-cache="noCache"
                         md-selected-item="selectedMember"
                         md-search-text="memberText"
+                         md-search-text-change="searchTextChange(searchText)"
+                        md-selected-item-change="selectedItemChange(item)"
                         md-items="item in memberSearch(memberText)"
                         md-item-text="item.rollno"
                         md-min-length="0"
@@ -20,10 +23,10 @@
                         </md-not-found>
                     </md-autocomplete>
                     
-                    <md-datepicker ng-model="startDate" md-placeholder="Start date"></md-datepicker>
-                    <md-datepicker ng-model="endDate" md-placeholder="End date"></md-datepicker>
+                    <md-datepicker ng-change="datechange()" ng-model="startDate" md-placeholder="Start date"></md-datepicker>
+                    <md-datepicker ng-change="datechange()" ng-model="endDate" md-placeholder="End date"></md-datepicker>
                     <br>
-                    <md-button class="md-raised" style="margin-top:25px" ng-click="add()">Add</md-button>
+                    <md-button ng-disabled="isDisabled||isProcessing" class="md-raised" style="margin-top:25px" ng-click="add()">Add</md-button>
 
                 </div>
                 <div class="col-sm-6">
@@ -32,7 +35,7 @@
                         <p ng-show="history.length==0" style="padding-top:10px;padding-left: 10px">No Mess leaves were recorded this month.</p>
                         <ul class="entrylist">
                             <li ng-repeat="item in history">
-                                {{item.rollno}}<span class="mid">{{item.startDate|date}}</span><span class="end">{{item.endDate|date}}</span></span>
+                                {{item.rollno}}<span class="mid">{{item.startdate|date}}</span><span class="end">{{item.enddate|date}}</span></span>
                             </li>
                         </ul>
                     </md-content>

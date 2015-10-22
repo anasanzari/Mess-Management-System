@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <md-autocomplete
-                        ng-disabled="isDisabled"
+                        ng-disabled="isProcessing"
                         md-no-cache="noCache"
                         md-selected-item="selectedItem"
                         md-search-text-change="searchTextChange(searchText)"
@@ -25,7 +25,7 @@
                     </md-autocomplete>
                 </div>
                 <div class="col-sm-6">
-                    <md-button class="md-raised" style="margin:0" ng-click="add(selectedItem)">Add</md-button>
+                    <md-button ng-disabled="isDisabled||isProcessing" class="md-raised" style="margin:0" ng-click="add(selectedItem)">Add</md-button>
                     
                 </div>
             </div>

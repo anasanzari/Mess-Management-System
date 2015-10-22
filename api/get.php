@@ -3,10 +3,7 @@
 require 'connection.php';
 $out = [];
 
-$_SESSION['loggedin'] = true;
-$_SESSION['usertype'] = 'mess';
-$_SESSION['messname'] = 'C MESS';
-$_SESSION['mess_id'] = '1001';
+
 
 $_SESSION['rollno']="B130112CS";
 $_SESSION['month']="2015-10";
@@ -212,7 +209,7 @@ function history_messcut()
 	global $conn;
 	$output = [];
 	$month=date("Y-m");
-	$sql="select MemberName,Members.RollNo as RollNo,FromDate,ToDate from Members,MessCut where ".
+	$sql="select MemberName as name ,Members.RollNo as rollno,FromDate as startdate ,ToDate as enddate from Members,MessCut where ".
 			"Members.RollNo = MessCut.RollNo and MessID = $mess_id and FromDate like '$month-%' order by FromDate desc";
 	
 	$result=mysqli_query($conn, $sql);
@@ -334,7 +331,7 @@ function extras_mess_perday()
 	global $conn;
 	$output = [];
 	$day=date("Y-m-d");
-	$sql="select MemberName,DateTime,Members.RollNo as RollNo,Extras.ExtrasID as ExtrasID, ExtrasName from Members,MessJoins,Mess,Extras,ExtrasTaken where ".
+	$sql="select MemberName as student ,DateTime as time ,Members.RollNo as rollno,Extras.ExtrasID as extrasid, ExtrasName as name,Price as price from Members,MessJoins,Mess,Extras,ExtrasTaken where ".
 			"Members.RollNo = MessJoins.RollNo and Members.RollNo = ExtrasTaken.RollNo and ExtrasTaken.ExtrasID = Extras.ExtrasID and Mess.MessID = $mess_id and DateTime like '$day%'";
 	
 	$result=mysqli_query($conn, $sql);
