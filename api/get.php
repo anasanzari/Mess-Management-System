@@ -3,8 +3,8 @@
 require 'connection.php';
 $out = [];
 
-
-
+$_SESSION['usertype'] ="mess";
+$_SESSION['mess_id'] = 1001;
 $_SESSION['rollno']="B130112CS";
 $_SESSION['month']="2015-10";
 
@@ -36,6 +36,15 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
                     break;
                 case 'messinfo' : $out = mess_info();
                     break;
+                case 'monthextralist' : $out=month_extras_student();
+                	break;
+                case 'monthbillstudent' : $out=month_bill_student();
+                	break;
+                case 'studentdetails' : $out=details_student();
+                	break;
+                case 'messdetails' : $out=details_mess();
+                	break;                	
+                
                 
             }
         }else if($_SESSION['usertype']=='student'){
@@ -518,12 +527,70 @@ function month_bill_student()
 			."from MessJoins as mj,Mess as m where mj.MessId = m.MessId and mj.StartDate like '$month-%' and mj.RollNo = '$rollno'";
 	$result=mysqli_query($conn, $sql);
 	while($row=$result->fetch_assoc()){
-		$output[] = $row;
+		$output['data'] = $row;
 	}
 
+	$output['extraslist']=month_extras_student();
 	
 	return $output;
 
 }
+
+//Function to find extras of a student in any given month month
+function month_extras_student()
+{
+	$rollno=$_SESSION['rollno'];
+	$month=$_SESSION['month'];
+	global $conn;
+	$output = [];
+
+	$sql = "select ExtrasName, Price, DateTime from "
+			."ExtrasTaken,Extras where ExtrasTaken.ExtrasId = Extras.ExtrasId and DateTime like '$month-%' and RollNo = '$rollno' order by DateTime desc";
+	$result=mysqli_query($conn, $sql);
+	while($row=$result->fetch_assoc()){
+		$output[] = $row;
+	}
+
+
+	return $output;
+
+}
+
+//Function to find details a student
+function details_student()
+{
+	$rollno=$_SESSION['rollno'];
+	global $conn;
+	$output = [];
+
+	$sql = "select * from Members where RollNo = '$rollno'";
+	$result=mysqli_query($conn, $sql);
+	while($row=$result->fetch_assoc()){
+		$output[] = $row;
+	}
+
+
+	return $output;
+
+}
+
+//Function to find details a mess
+function details_mess()
+{
+	$messid=$_SESSION['mess_id'];
+	global $conn;
+	$output = [];
+
+	$sql = "select * from Mess where MessID = $messid";
+	$result=mysqli_query($conn, $sql);
+	while($row=$result->fetch_assoc()){
+		$output[] = $row;
+	}
+
+
+	return $output;
+
+}
+
 
 	?>

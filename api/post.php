@@ -134,14 +134,60 @@ function addleave(){
 }
 
 function ratemess(){
-    $output = [];
-    
-    return $output;
+	global $conn;
+	global $data;
+	$output = [];
+	
+	if(isset($data['messid'])&&isset($data['ratingval'])){
+		 
+		$messid = escape($data['messid']);
+		$ratingval=escape($data['ratingval']);
+		$rollno = $_SESSION['rollno'];
+	
+		$sql = "insert into ratings values($ratingval,'$rollno','$messid')";
+		if($conn->query($sql)){
+			$output['status'] = 'success';
+	
+		}else{
+			$output['status'] = 'fail';
+			$output['error'] = 'query error.';
+		}
+	
+	}else{
+		$output['status'] = 'fail';
+		$output['error'] = "data missing.";
+	}
+	
+	return $output;
 }
 
+
 function forumpost(){
-    $output = [];
-    
+	global $conn;
+	global $data;
+	$output = [];
+	
+	if(isset($data['messid'])&&isset($data['forumpost'])&&isset($data['datetime'])){
+			
+		$messid = escape($data['messid']);
+		$forumpost=escape($data['forumpost']);
+		$datetime=escape($data['datetime']);
+		$rollno = $_SESSION['rollno'];
+	
+		$sql = "insert into forum values('$datetime','$forumpost','$rollno','$messid')";
+		if($conn->query($sql)){
+			$output['status'] = 'success';
+	
+		}else{
+			$output['status'] = 'fail';
+			$output['error'] = 'query error.';
+		}
+	
+	}else{
+		$output['status'] = 'fail';
+		$output['error'] = "data missing.";
+	}
+	    
     return $output;
 }
 
