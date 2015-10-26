@@ -4,7 +4,11 @@ var AppControllers = angular.module('AppControllers', []);
 
 AppControllers.controller('AdminCtrl',
         function AdminCtrl($scope, $location, $rootScope) {
-            $scope.title = "Admin Hello";
+            
+            AdminResources.get({querytype: 'messdetails'}, function (response) {
+                $scope.addedMembers = response.data;
+            });
+            
             $scope.menu = [{name: 'Mess Card Entry', link: 'messentry'},
                 {name: 'Extras Entry', link: 'extrasentry'}, {name: 'Mess Cuts', link: 'messcuts'},
                 {name: 'Billings', link: 'billings'}, {name: 'Analysis', link: 'analysis'},
@@ -22,7 +26,9 @@ AppControllers.controller('AdminCtrl',
 );
 
 AppControllers.controller('MainCtrl',
-        function MainCtrl($scope, $location, $rootScope) {
+        function MainCtrl($scope, AdminResources) {
+            
+            
 
         }
 );

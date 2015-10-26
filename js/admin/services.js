@@ -36,39 +36,6 @@ AppServices.service('AdminService',
                 daysInMonth: daysInMonth,
                 parseDate: parseDate
             }
-
-            /* var addedStudents = [];
-             var isupdated_addedStudents = false;
-             var availableStudents = [];
-             var isupdated_availableSudents = false;
-             
-             var getAddedStudents = function(){
-             if(isupdated_addedStudents) return;
-             AdminFactory.get({querytype:'added_students'},
-             function success(response){
-             console.log(response);
-             if(response.status=='success'){
-             isupdated_addedStudents = true;
-             addedStudents = response;
-             }else{
-             
-             }
-             
-             },
-             function error(res){
-             
-             }
-             );
-             };
-             getAddedStudents();
-             
-             
-             return {
-             addedStudents:addedStudents,
-             availableStudents:availableStudents
-             
-             }*/
-
         }
 
 );
