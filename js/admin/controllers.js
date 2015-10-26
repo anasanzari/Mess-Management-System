@@ -3,7 +3,7 @@
 var AppControllers = angular.module('AppControllers', []);
 
 AppControllers.controller('AdminCtrl',
-        function AdminCtrl($scope, $location, $rootScope) {
+        function AdminCtrl($scope, $location, $rootScope,AdminResources) {
             
             AdminResources.get({querytype: 'messdetails'}, function (response) {
                 $scope.addedMembers = response.data;

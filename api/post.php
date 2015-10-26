@@ -4,7 +4,7 @@
 require 'connection.php';
 
 $_SESSION['loggedin'] = true;
-$_SESSION['usertype'] = 'mess';
+$_SESSION['usertype'] = 'student';
 $_SESSION['messname'] = 'C MESS';
 $_SESSION['messid'] = '1001';
 
@@ -137,21 +137,29 @@ function ratemess(){
 	global $conn;
 	global $data;
 	$output = [];
-	
-	if(isset($data['messid'])&&isset($data['ratingval'])){
-		 
-		$messid = escape($data['messid']);
+	$rollno = $_SESSION['rollno'];
+	if(isset($data['ratingval'])){
+            
+            $month = date('Y-m');
+            $sql = "select MessId from messjoins where RollNo = '$rollno' and startDate like '$month-%';";
+            $result = mysqli_query($conn, $sql); 
+            if($result&&$result->num_rows>0){
+                $messid = $result->fetch_assoc()['MessId'];
 		$ratingval=escape($data['ratingval']);
-		$rollno = $_SESSION['rollno'];
-	
-		$sql = "insert into ratings values($ratingval,'$rollno','$messid')";
+		
+                //check if already exits 
+                $sql = "insert into rating values('$ratingval','$rollno','$messid')  ON DUPLICATE KEY UPDATE RatingValue = '$ratingval'";
 		if($conn->query($sql)){
 			$output['status'] = 'success';
 	
 		}else{
 			$output['status'] = 'fail';
-			$output['error'] = 'query error.';
+			$output['error'] = 'query error.'.$sql;
 		}
+            }else{
+                $output['status'] = 'fail';
+                $output['error'] = 'No mess.';
+            }
 	
 	}else{
 		$output['status'] = 'fail';
@@ -166,14 +174,15 @@ function forumpost(){
 	global $conn;
 	global $data;
 	$output = [];
-	
-	if(isset($data['messid'])&&isset($data['forumpost'])&&isset($data['datetime'])){
-			
-		$messid = escape($data['messid']);
-		$forumpost=escape($data['forumpost']);
-		$datetime=escape($data['datetime']);
-		$rollno = $_SESSION['rollno'];
-	
+	$rollno = $_SESSION['rollno'];
+	if(isset($data['comment'])){
+            $month = date('Y-m');
+            $sql = "select MessId from messjoins where RollNo = '$rollno' and startDate like '$month-%';";
+            $result = mysqli_query($conn, $sql); 
+            if($result&&$result->num_rows>0){
+                $messid = $result->fetch_assoc()['MessId'];
+		$forumpost=escape($data['comment']);
+		$datetime= date("Y-m-d h:i:s");
 		$sql = "insert into forum values('$datetime','$forumpost','$rollno','$messid')";
 		if($conn->query($sql)){
 			$output['status'] = 'success';
@@ -182,6 +191,11 @@ function forumpost(){
 			$output['status'] = 'fail';
 			$output['error'] = 'query error.';
 		}
+            }else{
+                $output['status'] = 'fail';
+                $output['error'] = 'he has no mess.';
+            }
+		
 	
 	}else{
 		$output['status'] = 'fail';

@@ -14,7 +14,7 @@
                             <li ng-repeat="item in list">
                                 <span class="roll onethree">{{item.name}}</span>
                                 <span class="name onethree">{{item.amount|currency:"&#8377"}}</span>
-                                <span class="cost onethree">{{item.time}}</span>
+                                <span class="cost onethree">{{item.time|date:"h:mm a, MMM d"}}</span>
                             </li>
                         </ul>
                     </md-content>

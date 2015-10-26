@@ -11,22 +11,23 @@
                                 <div class="col-sm-6">
                                     <md-input-container>
                                         <label>Select Month</label>
-                                        <md-select ng-model="selectedMonth" ng-change="changeMonth()">
-                                            <md-option ng-repeat="month in months" value="{{month}}">
-                                                {{month}}
+                                        <md-select ng-model="selectedMonth" ng-change="onChange()">
+                                            <md-option ng-repeat="month in months" ng-value="{{month}}">
+                                                {{month.month}}
                                             </md-option>
                                         </md-select>
                                     </md-input-container>
                                     
-                                    <div>
-                                        <h5>Extras Total : {{extratotal|currency:"&#8377"}}</h5>
-                                        <h5>No of Cuts : {{cuts}}</h5>
-                                        <h3>Total : {{total|currency:"&#8377"}}</h3>
+                                    <div ng-show="show">
+                                        <h5>Join Date: {{details.StartDate|date:"yyyy MMM d"}}</h5>
+                                        <h5>Extras Total : {{details.ExtrasTotal|currency:"&#8377"}}</h5>
+                                        <h5>No of Leaves : {{details.CutDays}}</h5>
+                                        <h3>Total : {{(details.PerDayRate*(totaldays-details.CutDays))+1*details.ExtrasTotal|currency:"&#8377"}}</h3>
                                         
                                     </div>
 
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-6" ng-show="show">
                                     <h4>Extras Details</h4>
                                     <md-content class="md-whiteframe-3dp">
                                         <div class="listhead">
@@ -35,10 +36,10 @@
                                             <span class="lh onethree">Time</span>
                                         </div>
                                         <ul class="entrylist billlist" style="max-height: 250px">
-                                            <li ng-repeat="item in list">
+                                            <li ng-repeat="item in details.extras">
                                                 <span class="roll onethree">{{item.name}}</span>
                                                 <span class="name onethree">{{item.amount|currency:"&#8377"}}</span>
-                                                <span class="cost onethree">{{item.time}}</span>
+                                                <span class="cost onethree">{{item.time|date:"h:mm a, MMM d"}}</span>
                                             </li>
                                         </ul>
                                     </md-content>

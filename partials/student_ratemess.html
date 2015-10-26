@@ -1,20 +1,40 @@
 <div class="container-fluid" style="padding-left: 30px">
     <div class="row" style="margin-top: 25px">
         <div class="col-sm-12">
+            <h3>Mess Ratings</h3>
+
             <div class="row">
-                <div class="col-sm-12">
-                    <h3>Rate Mess</h3>
-                    <md-content class="md-whiteframe-3dp">
-                         
+                <div class="col-sm-6">
+                     <md-content class="md-whiteframe-3dp">
                         <ul class="entrylist">
-                            <li ng-repeat="mess in messes">
-                                <span style="font-size: 2rem;display: inline-block">{{mess.name}}</span>
-                                <span style="margin-right: 10px"></span>
-                                <mess-rating rating="{{mess.rating}}"></mess-rating>
-                                
+                            <li ng-repeat="item in messes">
+                                {{item.MessName}} <span class="mid" style="font-size: 2rem">{{item.rating|number:2}}/5</span>
                             </li>
                         </ul>
                     </md-content>
+                    
+                </div>
+                <div class="col-sm-6">
+                    
+                    <md-content class="md-whiteframe-3dp" style="padding: 10px">
+                        
+                            <h4>Rate Your current Mess</h4>
+                            <mess-rating rating="{{rating}}" on-rate="rate(rating)"></mess-rating>
+                                
+                        
+                    </md-content>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<!--div class="container-fluid" style="padding-left: 30px">
+    <div class="row" style="margin-top: 25px">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    
 
                 </div>
 
@@ -23,6 +43,6 @@
         </div>
     </div>
 
-</div>
+</div-->
 
 
