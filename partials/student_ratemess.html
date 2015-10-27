@@ -5,8 +5,9 @@
 
             <div class="row">
                 <div class="col-sm-6">
+                     <p ng-show="messes.length==0" style="padding-left: 20px;color: #ff6666">Nobody has rated any  mess yet.</p>
                      <md-content class="md-whiteframe-3dp">
-                        <ul class="entrylist">
+                        <ul class="entrylist" ng-show="messes.length!=0">
                             <li ng-repeat="item in messes">
                                 {{item.MessName}} <span class="mid" style="font-size: 2rem">{{item.rating|number:2}}/5</span>
                             </li>

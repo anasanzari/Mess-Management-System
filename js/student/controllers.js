@@ -41,7 +41,7 @@ AppControllers.controller('CurrentMonthCtrl',
 
             });
 
-            //$scope.list = [{name:'Kur kure',amount:'30',time:'5 pm'},{name:'Coke',amount:'40',time:'5 pm'}];
+            
         }
 );
 
@@ -60,10 +60,11 @@ AppControllers.controller('PrevMonthsCtrl',
                     console.log($scope.selectedMonth.format+"-01");
                     var date = StudentService.parseDate($scope.selectedMonth.format+"-01");
                     $scope.totaldays = StudentService.daysInMonth(date.month, date.year);
-                    
+                    //global data set is inevitable :P :P<--------------------------------------
                     StudentResources.get({querytype: 'monthbillstudent', rollno: 'b130705cs', month: '2015-10'}, function (response) {
                         $scope.details = response.data;
                     });
+                    
                 }else{
                     $scope.show = false;
                 }
@@ -120,7 +121,7 @@ AppControllers.controller('ForumCtrl',
 AppControllers.controller('RateMessCtrl',
         function RateMessCtrl($scope, StudentResources, StudentService) {
             
-            $scope.rating = 4;
+            $scope.rating = 0;
             StudentResources.get({querytype: 'ratings'}, function (response) {
                         $scope.messes = response.data;
             });

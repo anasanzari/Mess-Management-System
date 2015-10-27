@@ -9,7 +9,7 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <md-input-container>
+                                    <md-input-container ng-hide="months.length==0">
                                         <label>Select Month</label>
                                         <md-select ng-model="selectedMonth" ng-change="onChange()">
                                             <md-option ng-repeat="month in months" ng-value="{{month}}">
@@ -29,7 +29,8 @@
                                 </div>
                                 <div class="col-sm-6" ng-show="show">
                                     <h4>Extras Details</h4>
-                                    <md-content class="md-whiteframe-3dp">
+                                    <p ng-show="details.extras.length==0" style="padding-left: 20px;color: #ff6666">You've not taken any extras this month.</p>
+                                    <md-content class="md-whiteframe-3dp" ng-show="details.extras.length!=0">
                                         <div class="listhead">
                                             <span class="lh onethree">Extra</span>
                                             <span class="lh onethree">Amount</span>
@@ -55,6 +56,5 @@
     </div>
 </div>
 
-</div>
 
 

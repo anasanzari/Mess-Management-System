@@ -4,10 +4,10 @@
 require 'connection.php';
 $out = [];
 
-//$_SESSION['usertype'] = "student";
+/*$_SESSION['usertype'] = "student";
 $_SESSION['mess_id'] = 1001;
 $_SESSION['rollno'] = "B130112CS";
-$_SESSION['month'] = "2015-10";
+$_SESSION['month'] = "2015-10";*/
 
 $out = [];
 
@@ -39,9 +39,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
                     break;
                 case 'messinfo' : $out = mess_info();
                     break;
-                case 'monthextralist' : $out = month_extras_student();
+                case 'monthbillstudent' :$out = month_bill_student();
                     break;
-               
                 case 'messdetails' : $out = details_mess();
                     break;
                 case 'getmonths': $out = getMonths();
@@ -272,8 +271,8 @@ function month_bill() {
 
 
     $sql = "select mj.StartDate as startdate, mj.RollNo as rollno,mem.MemberName as name, m.PerDayRate as perdayrate, "
-            . "(select sum(DATEDIFF(ToDate,FromDate)) from MessCut,Members where MessCut.RollNo = Members.RollNo and Members.RollNo = mj.RollNo and FromDate like '$month-%') as cuts, "
-            . "(select sum(Price) from ExtrasTaken,Extras where ExtrasTaken.ExtrasId = Extras.ExtrasId and ExtrasTaken.Rollno = mj.RollNo and DateTime like '$month-%') as extras "
+            . "coalesce((select sum(DATEDIFF(ToDate,FromDate)) from MessCut,Members where MessCut.RollNo = Members.RollNo and Members.RollNo = mj.RollNo and FromDate like '$month-%'),0) as cuts, "
+            . "coalesce((select sum(Price) from ExtrasTaken,Extras where ExtrasTaken.ExtrasId = Extras.ExtrasId and ExtrasTaken.Rollno = mj.RollNo and DateTime like '$month-%'),0) as extras "
             . "from MessJoins as mj,Mess as m, Members as mem where mem.RollNo = mj.RollNo and mj.MessId = m.MessId and mj.StartDate like '$month-%' and m.MessId = $mess_id";
     $result = mysqli_query($conn, $sql);
 
@@ -307,6 +306,7 @@ function mess_amount_analysis() {
 
     if ($result) {
         $output['status'] = "success";
+        $data = [];
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
@@ -437,12 +437,14 @@ function mess_info() {
 
 //Function to view the forum of the students' current mess
 function forum_post_student() {
-    $rollno = $_SESSION['rollno'];
+    $rollno = $_SESSION['rollno']; 
     global $conn;
     $output = [];
     $sql = "select MessName, Members.RollNo as RollNo, MemberName,DATE_FORMAT(DateTime, '%Y-%m-%dT%TZ')as DateTime , Comment from Members,Forum,Mess,MessJoins where " .
             "Members.RollNo = MessJoins.RollNo and MessJoins.MessID = Mess.MessID and Forum.MessID = Mess.MessID and Members.RollNo='$rollno' order by DateTime desc";
-
+    $month = date('Y-m');
+    $sql = "select DATE_FORMAT(c.DateTime, '%Y-%m-%dT%TZ')as DateTime, c.Comment, m.MemberName , m.RollNo from forum as c inner join members as m on c.RollNo = m.RollNo and c.messId = (select MessId from messjoins where RollNo = '$rollno' and startDate like '$month-%')  order by DateTime desc;";
+    
     $result = mysqli_query($conn, $sql);
 
     if ($result) {
@@ -498,8 +500,8 @@ function month_bill_student() {
     $output = [];
 
     $sql = "select mj.StartDate, mj.RollNo, m.PerDayRate, "
-            . "(select sum(DATEDIFF(ToDate,FromDate)) from MessCut,Members where MessCut.RollNo = Members.RollNo and Members.RollNo = mj.RollNo and FromDate like '$month-%') as CutDays, "
-            . "(select sum(Price) from ExtrasTaken,Extras where ExtrasTaken.ExtrasId = Extras.ExtrasId and ExtrasTaken.Rollno = mj.RollNo and DateTime like '$month-%') as ExtrasTotal "
+            . "coalesce((select sum(DATEDIFF(ToDate,FromDate)) from MessCut,Members where MessCut.RollNo = Members.RollNo and Members.RollNo = mj.RollNo and FromDate like '$month-%'),0) as CutDays, "
+            . "coalesce((select sum(Price) from ExtrasTaken,Extras where ExtrasTaken.ExtrasId = Extras.ExtrasId and ExtrasTaken.Rollno = mj.RollNo and DateTime like '$month-%'),0) as ExtrasTotal "
             . "from MessJoins as mj,Mess as m where mj.MessId = m.MessId and mj.StartDate like '$month-%' and mj.RollNo = '$rollno'";
     $result1 = mysqli_query($conn, $sql);
     
@@ -528,10 +530,12 @@ function month_bill_student() {
     return $output;
 }
 
+//month_bill_formess()
+
 //Function to find extras of a student in any given month month
 function month_extras_student() {
     $rollno = $_SESSION['rollno'];
-    $month = $_SESSION['month'];
+    $month = date('Y-m');//$_GET['month'];
     global $conn;
     $output = [];
 
@@ -590,11 +594,17 @@ function details_mess() {
 
     $sql = "select * from Mess where MessID = $messid";
     $result = mysqli_query($conn, $sql);
-    while ($row = $result->fetch_assoc()) {
-        $output[] = $row;
+    
+    if ($result) {
+        $output['status'] = "success";
+        while ($row = $result->fetch_assoc()) {
+            $data = $row;
+        }
+        $output['data'] = $data;
+    } else {
+        $output['status'] = 'fail';
+        $output['error'] = "query error";
     }
-
-
     return $output;
 }
 

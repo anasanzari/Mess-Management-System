@@ -4,7 +4,8 @@
             <div class="row">
                 <div class="col-sm-12">
                     <h3>Current Month Extras Details.</h3>
-                    <md-content class="md-whiteframe-3dp">
+                    <p ng-show="list.length==0" style="padding-left: 20px;color: #ff6666">You've not taken any extras this month.</p>
+                    <md-content class="md-whiteframe-3dp" ng-hide="list.length==0">
                          <div class="listhead">
                                 <span class="lh onethree">Extra</span>
                                 <span class="lh onethree">Amount</span>

@@ -36,7 +36,7 @@
     <div class="row" style="margin-top: 25px">
         <div class="col-sm-12">
             <h3>Added Mess Members</h3>
-
+            <p ng-show="addedMembers.length==0" style="padding-left: 20px;color: #ff6666">No members are added for current month.</p>                      
             <md-content class="md-whiteframe-3dp" style="width:50%">
                 <ul class="entrylist">
                     <li ng-repeat="member in addedMembers">

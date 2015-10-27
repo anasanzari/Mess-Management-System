@@ -29,7 +29,7 @@ messapp.config(['$routeProvider', '$locationProvider',
                 }).when('/billings',{
                     templateUrl: 'partials/admin_billings.html',
                     controller: 'BillingsCtrl'
-                }).when('/billings/:id',{
+                }).when('/billings/:name/:id/:month',{
                     templateUrl: 'partials/admin_billmember.html',
                     controller: 'BillMemberCtrl'
                 }).when('/analysis',{

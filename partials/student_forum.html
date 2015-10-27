@@ -12,11 +12,12 @@
                     </div>
                     <md-button class="md-raised" style="margin:0" ng-click="post()" ng-disabled="!canPost||isProcessing">Post</md-button>
                
-
-                    <md-content class="md-whiteframe-3dp" style="margin-top: 15px">
                        
-                       <ul class="postlist">
-                           <li ng-repeat="post in posts" >
+                    <md-content class="md-whiteframe-3dp" style="margin-top: 15px;">
+                        <p ng-show="posts.length==0" style="padding: 10px;color: #ff6666">Nobody has posted yet.</p>
+                         
+                        <ul class="postlist" style="max-height: 300px">
+                            <li ng-repeat="post in posts" >
                                <div>
                                    <span class="pname">{{post.MemberName}}</span>
                                    <span class="proll">{{post.RollNo}}</span>

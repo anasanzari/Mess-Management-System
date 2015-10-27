@@ -4,17 +4,29 @@
             <div class="row">
                 <div class="col-sm-12">
                     <h3>Billings</h3>
-                    <md-content class="md-whiteframe-3dp">
-                         <div class="listhead">
-                                <span class="lh onethree">Roll No</span>
-                                <span class="lh onethree">Name</span>
-                                <span class="lh onethree">Total</span>
-                         </div>
+                    <p ng-show="months.length==0" style="padding-left: 20px;color: #ff6666">No bills are complete yet.</p>                
+                    <md-input-container ng-hide="months.length==0" style="max-width: 200px">
+                        <label>Select Month</label>
+                        <md-select ng-model="selectedMonth" ng-change="onChange()">
+                            <md-option ng-repeat="month in months" ng-value="{{month}}">
+                                {{month.month}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    
+                    <p ng-show="show&&billings.length==0" style="padding-left: 20px;color: #ff6666">No details were found.</p>                
+                    
+                    <md-content class="md-whiteframe-3dp" ng-hide="!show||months.length==0">
+                        <div class="listhead">
+                            <span class="lh onethree">Roll No</span>
+                            <span class="lh onethree">Name</span>
+                            <span class="lh onethree">Total</span>
+                        </div>
                         <ul class="entrylist billlist">
-                            <li ng-repeat="item in billings" ng-click="navigate(item.rollno)">
+                            <li ng-repeat="item in billings" ng-click="navigate(item.rollno,item.name)">
                                 <span class="roll onethree">{{item.rollno}}</span>
                                 <span class="name onethree">{{item.name}}</span>
-                                <span class="cost onethree">{{(item.perdayrate*(totaldays-item.cuts))+1*item.extras|currency:"&#8377"}}</span>
+                                <span class="cost onethree">{{(item.perdayrate * (totaldays - item.cuts)) + 1 * item.extras | currency:"&#8377"}}</span>
                             </li>
                         </ul>
                     </md-content>

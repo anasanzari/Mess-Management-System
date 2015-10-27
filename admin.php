@@ -37,7 +37,7 @@ if(!$_SESSION['loggedin']){
         <div  class="container-fluid" ng-controller="AdminCtrl">
             <div class="sidenav">
                 <div class="sidenavheader">
-                    <h3>Anas M</h3>
+                    <h3>{{messDetails.MessName}}</h3>
                 </div>
                 <ul>
                     <li ng-repeat="item in menu" ng-click="navigate(item.link)" ng-class="{active:current==item.link}">{{item.name}}</li>

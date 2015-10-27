@@ -2,11 +2,11 @@
 
 /* @author anas anzari */
 require 'connection.php';
-
+/*
 $_SESSION['loggedin'] = true;
 $_SESSION['usertype'] = 'student';
 $_SESSION['messname'] = 'C MESS';
-$_SESSION['messid'] = '1001';
+$_SESSION['messid'] = '1001';*/
 
 $out = [];
 

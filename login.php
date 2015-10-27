@@ -18,7 +18,7 @@ if(isset($_POST['username'])&&isset($_POST['password'])&&isset($_POST['usertype'
             
         }else{
             //error
-            echo 'error';
+            $errmsg = "Sorry. Rollno/Password doesn't match.";
         }
     }else if($usertype=='messadmin'){
         $sql = "select * from mess where MessCoordinator = '$username' and MessPassword = '$password';";
@@ -32,7 +32,7 @@ if(isset($_POST['username'])&&isset($_POST['password'])&&isset($_POST['usertype'
             header('Location: admin.php');
             
         }else{
-            //error
+            $errmsg = "Sorry. Username/Password doesn't match.";
         }
             
     }
@@ -72,6 +72,7 @@ if(isset($_POST['username'])&&isset($_POST['password'])&&isset($_POST['usertype'
             <div class="row" style="margin-top: 50px">
                 <div class="col-md-6 col-md-offset-3">
                     <form method="POST" action="login.php">
+                        <p style="color:#ff6666"><?=isset($errmsg)? $errmsg : ""?></php>
                         <div class="form-group">
                             <label>Username/Rollno</label>
                             <input type="text" name="username" class="form-control"  placeholder="Username/rollno">
