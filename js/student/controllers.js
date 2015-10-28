@@ -3,17 +3,19 @@
 var AppControllers = angular.module('AppControllers', []);
 
 AppControllers.controller('AdminCtrl',
-        function AdminCtrl($scope, $location, StudentResources) {
+        function AdminCtrl($scope, $location, StudentResources,StudentService) {
 
             StudentResources.get({querytype: 'studentdetails'}, function (response) {
                 console.log(response.data);
                 $scope.student = response.data;
+                StudentService.setDetails(response.data);
 
             });
-
+            
             $scope.menu = [{name: 'Current Month', link: 'currentmonth'},
                 {name: 'Previous Months', link: 'prevmonths'}, {name: 'Forum', link: 'forum'},
                 {name: 'Rate Mess', link: 'ratemess'}, {name: 'Log Out', link: 'logout'}];
+            
             $scope.current = "";
 
             $scope.navigate = function (link) {
@@ -33,8 +35,19 @@ AppControllers.controller('MainCtrl',
 );
 
 AppControllers.controller('CurrentMonthCtrl',
-        function CurrentMonthCtrl($scope, StudentResources) {
-
+        function CurrentMonthCtrl($scope,  StudentResources,StudentService) {
+            if(StudentService.getDetails()==null){
+                //fetch details .
+            }
+            $scope.joined = true;
+            if(StudentService.getDetails()!=null){
+                var details = StudentService.getDetails();
+                
+                if(details.mess==null){
+                    $scope.joined = false;
+                    alert($scope.joined);
+                }
+            }
             StudentResources.get({querytype: 'monthextralist'}, function (response) {
                 console.log(response.data);
                 $scope.list = response.data;
@@ -60,8 +73,10 @@ AppControllers.controller('PrevMonthsCtrl',
                     console.log($scope.selectedMonth.format+"-01");
                     var date = StudentService.parseDate($scope.selectedMonth.format+"-01");
                     $scope.totaldays = StudentService.daysInMonth(date.month, date.year);
-                    //global data set is inevitable :P :P<--------------------------------------
-                    StudentResources.get({querytype: 'monthbillstudent', rollno: 'b130705cs', month: '2015-10'}, function (response) {
+                    
+                    var rollno = StudentService.getDetails().rollno;
+                    
+                    StudentResources.get({querytype: 'monthbillstudent', rollno: rollno, month: $scope.selectedMonth.format}, function (response) {
                         $scope.details = response.data;
                     });
                     
@@ -81,8 +96,26 @@ AppControllers.controller('PrevMonthsCtrl',
 AppControllers.controller('ForumCtrl',
         function ForumCtrl($scope, StudentResources, StudentService) {
             
+            
+            
+            if(StudentService.getDetails()==null){
+                //fetch details .
+            }
+            $scope.joined = true;
+            if(StudentService.getDetails()!=null){
+                var details = StudentService.getDetails();
+                if(details.mess==null){
+                    $scope.joined = false;
+                }
+            }
+            
+            
             $scope.canPost = false;
             $scope.isProcessing = false;
+            
+            
+            
+            
             
             $scope.change = function(){
                 if($scope.comment.length>0){
@@ -121,10 +154,24 @@ AppControllers.controller('ForumCtrl',
 AppControllers.controller('RateMessCtrl',
         function RateMessCtrl($scope, StudentResources, StudentService) {
             
-            $scope.rating = 0;
+            
             StudentResources.get({querytype: 'ratings'}, function (response) {
                         $scope.messes = response.data;
             });
+            
+            if(StudentService.getDetails()==null){
+                //fetch details .
+            }
+            $scope.joined = true;
+            if(StudentService.getDetails()!=null){
+                var details = StudentService.getDetails();
+                
+                if(details.mess==null){
+                    $scope.joined = false;
+                }
+                $scope.rating = StudentService.getDetails().rating;
+            }
+            
             
             var updateRatings = function(){
                StudentResources.get({querytype: 'ratings'}, function (response) {

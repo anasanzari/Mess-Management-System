@@ -569,8 +569,9 @@ function details_student() {
     $month = date('Y-m');
     //$sql = "select m.MemberName as name, m.RollNo as rollno, m.PhoneNo as phone, j.StartDate, j.MessId from members as m, messjoins as j where RollNo = '$rollno' and m.RollNo = j.Rollno and j.StartDate";
     $sql = "select m.MemberName as name, m.RollNo as rollno, m.PhoneNo as phone, "
-            . "(select MessId from messjoins where RollNo = m.RollNo and startDate like '$month-%') as mess from members as m where RollNo = '$rollno';";
-    
+            . "(select MessId from messjoins where RollNo = m.RollNo and startDate like '$month-%') as mess,"
+            ."coalesce((select RatingValue from rating where RollNo = m.RollNo and MessID = mess),0) as rating"
+            . " from members as m where RollNo = '$rollno';";
     $result = mysqli_query($conn, $sql);
     if ($result) {
         $output['status'] = "success";
@@ -592,7 +593,7 @@ function details_mess() {
     global $conn;
     $output = [];
 
-    $sql = "select * from Mess where MessID = $messid";
+    $sql = "select MessID,MessCoordinator,MessName,PerDayRate from Mess where MessID = $messid";
     $result = mysqli_query($conn, $sql);
     
     if ($result) {

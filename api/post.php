@@ -54,7 +54,7 @@ function messcardentry(){
     if(isset($data['rollno'])){
        
         $rollno = escape($data['rollno']);
-        $messid = $_SESSION['messid'];
+        $messid = $_SESSION['mess_id'];
         $date = date('Y-m-d');
         //verify $rollno has not been joined any mess. <--------------------------------------------
         
@@ -84,7 +84,7 @@ function addextra(){
        
         $rollno = escape($data['rollno']);
         $extraid = escape($data['extraid']);
-        $messid = $_SESSION['messid'];
+        $messid = $_SESSION['mess_id'];
         $date = date("Y-m-d H:i:s");
        
         $sql = "insert into extrastaken values('$date','$rollno','$extraid');";
@@ -114,7 +114,7 @@ function addleave(){
         $rollno = escape($data['rollno']);
         $startdate = escape($data['startdate']);
         $enddate = escape($data['enddate']);
-        $messid = $_SESSION['messid'];
+        $messid = $_SESSION['mess_id'];
         
         $sql = "insert into messcut values(DATE_FORMAT('$startdate', '%Y-%m-%d'),DATE_FORMAT('$enddate','%Y-%m-%d'),'$rollno','$messid');";
         if($conn->query($sql)){

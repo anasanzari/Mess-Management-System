@@ -32,9 +32,21 @@ AppServices.service('StudentService',
                 };
             }
             
+             var details = null; //MessID, MessName, MessCoordinator
+            
+            function setDetails(d){
+                details = d;
+            }
+            
+            function getDetails(){
+                return details;
+            }
+            
             return {
                 daysInMonth: daysInMonth,
-                parseDate: parseDate
+                parseDate: parseDate,
+                getDetails: getDetails,
+                setDetails: setDetails
             }
         }
 

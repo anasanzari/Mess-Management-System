@@ -16,8 +16,8 @@ AppServices.factory('AdminResources',
 
 AppServices.service('AdminService',
         function AdminService() {
-
-
+            
+            
             function daysInMonth(month, year) {
                 return new Date(year, month, 0).getDate();
             }
@@ -31,10 +31,21 @@ AppServices.service('AdminService',
                     day: +str.substr(8, 2)
                 };
             }
+            var details = null; //MessID, MessName, MessCoordinator
+            
+            function setDetails(d){
+                details = d;
+            }
+            
+            function getDetails(){
+                return details;
+            }
             
             return {
                 daysInMonth: daysInMonth,
-                parseDate: parseDate
+                parseDate: parseDate,
+                getDetails: getDetails,
+                setDetails: setDetails
             }
         }
 

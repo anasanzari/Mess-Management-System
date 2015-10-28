@@ -3,10 +3,11 @@
 var AppControllers = angular.module('AppControllers', []);
 
 AppControllers.controller('AdminCtrl',
-        function AdminCtrl($scope, $location, $rootScope, AdminResources) {
+        function AdminCtrl($scope, $location, $rootScope, AdminResources,AdminService) {
 
             AdminResources.get({querytype: 'messdetails'}, function (response) {
                 $scope.messDetails = response.data;
+                AdminService.setDetails(response.data);
             });
 
             $scope.menu = [{name: 'Mess Card Entry', link: 'messentry'},
@@ -116,7 +117,7 @@ AppControllers.controller('ExtrasEntryCtrl',
                     $scope.isDisabled = true;
                 }
             }
-
+            
             AdminResources.get({querytype: 'added_students'}, function (response) {
                 $scope.addedMembers = response.data;
             });
