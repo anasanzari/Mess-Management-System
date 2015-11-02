@@ -183,14 +183,15 @@ function history_extras() {
     return $output;
 }
 
-//Function to find history of members added to a mess
+//Function to find history of members added to a mess in current month.
 
 function added_members() {
     $mess_id = $_SESSION['mess_id'];
     global $conn;
     $output = [];
+    $month = date("Y-m");
     $sql = "select MemberName as name,StartDate as startdate,Members.RollNo as rollno from Members,MessJoins where " .
-            "Members.RollNo = MessJoins.RollNo and MessID = '$mess_id' order by StartDate desc";
+            "Members.RollNo = MessJoins.RollNo and MessID = '$mess_id' and StartDate like '$month-%' order by StartDate desc";
     $result = mysqli_query($conn, $sql);
 
     if ($result) {

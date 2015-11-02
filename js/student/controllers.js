@@ -45,7 +45,7 @@ AppControllers.controller('CurrentMonthCtrl',
                 
                 if(details.mess==null){
                     $scope.joined = false;
-                    alert($scope.joined);
+                   // alert($scope.joined);
                 }
             }
             StudentResources.get({querytype: 'monthextralist'}, function (response) {
