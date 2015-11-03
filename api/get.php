@@ -274,7 +274,7 @@ function month_bill() {
     $sql = "select mj.StartDate as startdate, mj.RollNo as rollno,mem.MemberName as name, m.PerDayRate as perdayrate, "
             . "coalesce((select sum(DATEDIFF(ToDate,FromDate)) from messcut,members where messcut.RollNo = members.RollNo and members.RollNo = mj.RollNo and FromDate like '$month-%'),0) as cuts, "
             . "coalesce((select sum(Price) from extrastaken,extras where extrastaken.ExtrasId = extras.ExtrasId and extrastaken.Rollno = mj.RollNo and DateTime like '$month-%'),0) as extras "
-            . "from messjoins as mj,Mess as m, members as mem where mem.RollNo = mj.RollNo and mj.MessId = m.MessId and mj.StartDate like '$month-%' and m.MessId = $mess_id";
+            . "from messjoins as mj,mess as m, members as mem where mem.RollNo = mj.RollNo and mj.MessId = m.MessId and mj.StartDate like '$month-%' and m.MessId = $mess_id";
     $result = mysqli_query($conn, $sql);
 
 
@@ -301,7 +301,7 @@ function mess_amount_analysis() {
     global $conn;
     $output = [];
     $sql = "select ExtrasName as name ,sum(Price) as amount , count(*) as count from members, messjoins, mess, extrastaken, extras where " .
-            "members.RollNo = messjoins.RollNo and members.RollNo = extrastaken.RollNo and extrastaken.ExtrasID = extras.ExtrasID and mess.MessID = $mess_id group by Extras.ExtrasID";
+            "members.RollNo = messjoins.RollNo and members.RollNo = extrastaken.RollNo and extrastaken.ExtrasID = extras.ExtrasID and mess.MessID = $mess_id group by extras.ExtrasID";
 
     $result = mysqli_query($conn, $sql);
 
