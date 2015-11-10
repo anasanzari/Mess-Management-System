@@ -41,6 +41,7 @@
                 <ul class="entrylist">
                     <li ng-repeat="member in addedMembers">
                         {{member.name}} <span class="mid">{{member.rollno}}</span>
+                        <span class="time">{{member.startdate|date:"MMM d"}}</span>
                     </li>
                 </ul>
             </md-content>

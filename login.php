@@ -34,22 +34,31 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['user
         }
     }
 }
-
+ $signup = false;
+    
 if (isset($_POST['rollno']) && isset($_POST['name']) && isset($_POST['password']) && isset($_POST['phone'])) {
-    $rollno = escape($_POST['rollno']);
+    $rollno =  strtolower(escape($_POST['rollno']));
     $name = escape($_POST['name']);
     $password = escape($_POST['password']);
     $phone = escape($_POST['phone']);
+    $signup = true;
+    $signmsg = "";
     
-    $sql = "insert into members values('$rollno','$name','$password','5','$phone')";
-    if($conn->query($sql)){
-        $_SESSION['loggedin'] = true;
-        $_SESSION['usertype'] = 'student';
-        $_SESSION['name'] = $name;
-        $_SESSION['rollno'] = $rollno;
-        header('Location: student.php');
+    if(!preg_match('/^b\d{6}(cs|ec|ee|me|ce|pe|ch|ep|ar|bt)$/', $rollno)){
+       $signmsg .= "Roll No is not valid. Example of valid roll no : b130705cs.<br/>"; 
+    }else if(!preg_match('/^\d{10}$/', $phone)){
+       $signmsg .= "PhoneNumber is not valid. Example of valid ph no : 9567212875 (10digit).";
     }else{
-        $errmsg = "Sorry. Something went wrong.";
+         $sql = "insert into members values('$rollno','$name','$password','5','$phone')";
+        if($conn->query($sql)){
+            $_SESSION['loggedin'] = true;
+            $_SESSION['usertype'] = 'student';
+            $_SESSION['name'] = $name;
+            $_SESSION['rollno'] = $rollno;
+            header('Location: student.php');
+        }else{
+            $signmsg = "Roll No already exits. Contact System Administrator.";
+        } 
     }
     
 }
@@ -89,7 +98,7 @@ if (isset($_POST['rollno']) && isset($_POST['name']) && isset($_POST['password']
                 <div class="col-md-6 col-md-offset-3">
                     <div class="flip-container">
                         <div class="flipper">  
-                            <div class="front">
+                            <div class="front" <?php if($signup){ echo 'style="display:none"';}?>>
                                 <form method="POST" action="login.php">
                                     <input type="hidden" name="type" value="login" />
                                     <p style="color:#ff6666"><?= isset($errmsg) ? $errmsg : "" ?></php>
@@ -118,22 +127,24 @@ if (isset($_POST['rollno']) && isset($_POST['name']) && isset($_POST['password']
                                     <a href="#" class="signup btn btn-danger">Sign Up</a>
                                 </form>
                             </div>
-                            <div class="back" style="display:none">
+                           
+                            <div class="back" <?php if(!$signup){ echo 'style="display:none"';}?>>
+                                
                                 <form method="POST" action="login.php">
                                     <input type="hidden" name="type" value="signup" />
-                                    <p style="color:#ff6666"><?= isset($errmsg) ? $errmsg : "" ?></php>
+                                    <p style="color:#ff6666"><?= isset($signmsg) ? $signmsg : "" ?></php>
                                     <div class="form-group">
                                         <label>Rollno</label>
-                                        <input type="text" name="rollno" class="form-control"  placeholder="Rollno" required>
+                                        <input type="text" name="rollno" class="form-control"  placeholder="Rollno" value="<?php if(isset($rollno)){echo $rollno;}?>" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Name</label>
-                                        <input type="text" name="name" class="form-control"  placeholder="Name" requied>
+                                        <input type="text" name="name" class="form-control"  placeholder="Name" value="<?php if(isset($name)){echo $name;}?>" required>
                                     </div>
                                     
                                     <div class="form-group">
                                         <label>Phone</label>
-                                        <input type="text" name="phone" class="form-control"  placeholder="Phone" required>
+                                        <input type="text" name="phone" class="form-control"  placeholder="Phone" value="<?php if(isset($phone)){echo $phone;}?>" required>
                                     </div>
                                     
                                     <div class="form-group">

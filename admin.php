@@ -51,7 +51,7 @@ if(!$_SESSION['loggedin']){
                     <div class="header">
                         <h2>Mess Management System 1.0</h2>
                     </div>
-                    <div style="margin-top: 100px;" ng-view></div>
+                    <div class="maincontainer" style="margin-top: 100px;" ng-view></div>
                     
                     
                 </div>  

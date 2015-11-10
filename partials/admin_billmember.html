@@ -6,6 +6,7 @@
                     <h3>Billings</h3>
                     <md-content class="md-whiteframe-3dp">
                         <div style="padding: 15px">
+                            <h4>Month: {{month|date:"MMM yyyy"}}</h4>
                             <h4>RollNo: {{rollno}}</h4>
                             <h4>Name: {{name}}</h4>
                             <h4>Days: {{totaldays}}</h4>
@@ -26,7 +27,8 @@
                 <p ng-show="data.extras.length == 0" style="padding-top:10px;padding-left: 10px">No extras taken yet.</p>
                 <ul class="entrylist">
                     <li ng-repeat="item in data.extras">
-                       {{item.name}}<span class="end">{{item.price|currency:"&#8377"}}</span>
+                       {{item.name}}<span class="end">{{item.amount|currency:"&#8377"}}</span>
+                       <span class="time">{{item.time|date:"h:mm a, MMM d"}}</span>
                     </li>
                 </ul>
             </md-content>

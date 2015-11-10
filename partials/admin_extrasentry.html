@@ -51,7 +51,8 @@
                         <p ng-show="history.length==0" style="padding-top:10px;padding-left: 10px">No extras taken yet.</p>
                         <ul class="entrylist">
                             <li ng-repeat="item in history">
-                                {{item.rollno}}<span class="mid">{{item.name}}</span><span class="end">{{item.price|currency:"&#8377"}}</span></span>
+                                {{item.rollno}}<span class="mid">{{item.name}}</span><span class="end">{{item.price|currency:"&#8377"}}</span>
+                                <span class="time">{{item.time|date:"h:mm a, MMM d"}}</span>
                             </li>
                         </ul>
                     </md-content>

@@ -129,7 +129,9 @@ AppControllers.controller('ExtrasEntryCtrl',
             });
 
             $scope.add = function () {
-                var item = {rollno: $scope.selectedMember.rollno, name: $scope.selectedExtra.name, price: $scope.selectedExtra.price};
+                var tim = new Date().getTime();
+                var item = {rollno: $scope.selectedMember.rollno, name: $scope.selectedExtra.name, price: $scope.selectedExtra.price,
+                            time:tim };
 
                 $scope.isProcessing = true;
                 var post = new AdminResources();
@@ -274,6 +276,7 @@ AppControllers.controller('BillMemberCtrl',
             var rollno = $routeParams.id;
             var month = $routeParams.month;
             var datestr = month + "-01";
+            $scope.month = datestr;
             var date = AdminService.parseDate(datestr);
             $scope.totaldays = AdminService.daysInMonth(date.month, date.year);
             $scope.name = name;

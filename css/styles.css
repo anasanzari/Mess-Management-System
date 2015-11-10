@@ -13,6 +13,24 @@ md-datepicker{
     background: #fff;
 }
 
+md-icon.md-default-theme, md-icon, .md-datepicker-input,
+.md-datepicker-expand-triangle,md-input-container textarea.md-input,
+.md-select-value .md-select-icon,.md-select-value :first-child{
+  color:#fff;  
+}
+md-input-container label,
+md-input-container.md-input-has-value:not(.md-input-invalid) label{
+    color:#e6e6e6;
+}
+.md-datepicker-input-container,md-select.md-default-theme, md-input-container .md-input,
+md-select .md-select-value{
+    border-bottom-color: #eee;
+}
+
+.md-button.md-raised[disabled]{
+    background: #999999;
+}
+
 
 
 /*extras*/
@@ -25,6 +43,11 @@ md-datepicker{
 *{
     font-family: mainfont;
 }
+
+body{
+      background: #39424E;
+}
+
 .title{
     background: #A48AD4;
     text-align: center;
@@ -37,8 +60,8 @@ md-datepicker{
 }
 
 .sidenav{
-    background-color: #2F3545;
-    background-image: linear-gradient(to bottom, #313340 0px, #2F3545 100%);
+    background-color: #365b67;
+    /*background-image: linear-gradient(to bottom, #313340 0px, #2F3545 100%);*/
     background-repeat: repeat-x;
     position: fixed;
     z-index: 1001;
@@ -77,7 +100,7 @@ ul{
 }
 
 .sidenavheader{
-    background: #A48AD4;
+    background: #D24937;
     padding: 15px 10px;
     min-height: 100px; 
 }
@@ -88,7 +111,7 @@ ul{
 }
 
 .header{
-    background: #fff;
+    background: #D24937;/*#5d5a4e;*/
     padding: 15px 10px;
     min-height: 100px;
     box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.14);
@@ -99,15 +122,19 @@ ul{
 .header h2{
     margin:0px;
     margin-left: -100px;
+    color:#fff;
     padding-top: 25px;
     text-align: center;
     
 }
 
-body{
-    background: #FAFAFA;
+.maincontainer h1,.maincontainer h2, .maincontainer h3, .maincontainer h4{
+  color:#fff;  
 }
 
+.maincontainer md-content h1,.maincontainer md-content h2,.maincontainer md-content h3, .maincontainer md-content h4{
+  color:#000;  
+}
 /*messcard entry */
 ul.entrylist{
     max-height: 400px;
@@ -137,10 +164,13 @@ span.name{
 }
 
 span.mid{
-    color:#c19b9b;
+    color:#ea387e;
 }
 span.end{
-    color:#f93131;
+    color:#28ad65;
+}
+span.time{
+    color: #ad9528;
 }
 
 span.brick{
@@ -192,10 +222,10 @@ span.pname,span.proll,span.ptime{
     padding-right: 10px;
 }
 span.pname{
-    color: #6a7bdc;
+    color: #257aa1;
 }
 span.proll{
-    color: #dc9d6a;
+    color: #25a14a;
 }
 span.ptime{
     color:#dc6a7f;

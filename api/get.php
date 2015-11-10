@@ -43,7 +43,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
                     break;
                 case 'messdetails' : $out = details_mess();
                     break;
-                case 'getmonths': $out = getMonths();
+                case 'getmonths': $out = getMonthsMess();
                     break;
             }
         } else if ($_SESSION['usertype'] == 'student') {
@@ -54,7 +54,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
                     break;
                 case 'month_bill' :$out = month_bill_student();
                     break;
-                case 'getmonths': $out = getMonths();
+                case 'getmonths': $out = getMonthsStudents();
                     break;
                 case 'studentdetails' : $out = details_student();
                     break;
@@ -76,11 +76,42 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
 header('Content-type: text/plain');
 echo json_encode($out, JSON_PRETTY_PRINT);
 
-function getMonths() {
+function getMonthsMess() {
     global $conn;
-
     $output = [];
-    $sql = "SELECT DISTINCT DATE_FORMAT( t.StartDate, '%Y-%m') AS date FROM messjoins as t ORDER BY t.`StartDate`";
+    $mess_id = $_SESSION['mess_id'];
+    $current = date('Y-m');
+    $sql = "SELECT DISTINCT DATE_FORMAT( t.StartDate, '%Y-%m') AS date FROM messjoins as t where MessID = '$mess_id' and NOT (StartDate LIKE '$current%')  ORDER BY t.`StartDate`";
+    $result = $conn->query($sql);
+    if ($result) {
+
+        $output['status'] = "success";
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $date = $row;
+            $d = split("-", $date['date']);
+            $monthNum = $d[1];
+            $dateObj = DateTime::createFromFormat('!m', $monthNum);
+            $monthName = $dateObj->format('F');
+            $df = $d[0]." ".$monthName;
+            $data[] = ["month"=>$df,"format" => $date['date']];
+        }
+        $output['data'] = $data;
+    } else {
+        echo 'nope';
+        $output['status'] = 'fail';
+        $output['error'] = "query error";
+    }
+    return $output;
+}
+
+function getMonthsStudents() {
+    global $conn;
+ $rollno = $_SESSION['rollno'];
+    $output = [];
+    $current = date('Y-m');
+    
+    $sql = "SELECT DISTINCT DATE_FORMAT( t.StartDate, '%Y-%m') AS date FROM messjoins as t where RollNo = '$rollno' and NOT (StartDate LIKE '$current%') ORDER BY t.`StartDate`";
     $result = $conn->query($sql);
     if ($result) {
 
@@ -190,7 +221,7 @@ function added_members() {
     global $conn;
     $output = [];
     $month = date("Y-m");
-    $sql = "select MemberName as name,StartDate as startdate,members.RollNo as rollno from members,messjoins where " .
+    $sql = "select MemberName as name,DATE_FORMAT(StartDate, '%Y-%m-%dT%TZ') as startdate,members.RollNo as rollno from members,messjoins where " .
             "members.RollNo = messjoins.RollNo and MessID = '$mess_id' and StartDate like '$month-%' order by StartDate desc";
     $result = mysqli_query($conn, $sql);
 
@@ -349,8 +380,8 @@ function extras_mess_perday() {
     global $conn;
     $output = [];
     $day = date("Y-m-d");
-    $sql = "select MemberName as student ,DateTime as time ,members.RollNo as rollno,extras.ExtrasID as extrasid, ExtrasName as name,Price as price from members,messjoins,mess,extras,extrastaken where " .
-            "members.RollNo = messjoins.RollNo and members.RollNo = extrastaken.RollNo and extrastaken.ExtrasID = extras.ExtrasID and mess.MessID = $mess_id and DateTime like '$day%'";
+    $sql = "select MemberName as student , DATE_FORMAT(DateTime, '%Y-%m-%dT%TZ') as time ,members.RollNo as rollno,extras.ExtrasID as extrasid, ExtrasName as name,Price as price from members,messjoins,mess,extras,extrastaken where " .
+            "members.RollNo = messjoins.RollNo and members.RollNo = extrastaken.RollNo and extrastaken.ExtrasID = extras.ExtrasID and mess.MessID = $mess_id and DateTime like '$day%' order by extrastaken.DateTime desc";
 
     $result = mysqli_query($conn, $sql);
 
