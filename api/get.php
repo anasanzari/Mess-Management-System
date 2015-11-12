@@ -332,8 +332,8 @@ function mess_amount_analysis() {
     global $conn;
     $output = [];
     $sql = "select ExtrasName as name ,sum(Price) as amount , count(*) as count from members, messjoins, mess, extrastaken, extras where " .
-            "members.RollNo = messjoins.RollNo and members.RollNo = extrastaken.RollNo and extrastaken.ExtrasID = extras.ExtrasID and mess.MessID = $mess_id group by extras.ExtrasID";
-
+            "members.RollNo = messjoins.RollNo and members.RollNo = extrastaken.RollNo and extrastaken.ExtrasID = extras.ExtrasID and mess.MessID=messjoins.MessID and mess.MessID = $mess_id group by extras.ExtrasID";
+    $output['sql'] = $sql;
     $result = mysqli_query($conn, $sql);
 
     if ($result) {
@@ -381,7 +381,7 @@ function extras_mess_perday() {
     $output = [];
     $day = date("Y-m-d");
     $sql = "select MemberName as student , DATE_FORMAT(DateTime, '%Y-%m-%dT%TZ') as time ,members.RollNo as rollno,extras.ExtrasID as extrasid, ExtrasName as name,Price as price from members,messjoins,mess,extras,extrastaken where " .
-            "members.RollNo = messjoins.RollNo and members.RollNo = extrastaken.RollNo and extrastaken.ExtrasID = extras.ExtrasID and mess.MessID = $mess_id and DateTime like '$day%' order by extrastaken.DateTime desc";
+            "members.RollNo = messjoins.RollNo and members.RollNo = extrastaken.RollNo and extrastaken.ExtrasID = extras.ExtrasID and mess.MessID=messjoins.MessID and mess.MessID = $mess_id and DateTime like '$day%' order by extrastaken.DateTime desc";
 
     $result = mysqli_query($conn, $sql);
 
